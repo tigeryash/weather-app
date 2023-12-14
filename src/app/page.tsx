@@ -8,14 +8,14 @@ import { LocationContext } from '@/contexts/LocationContext'
 import SearchResults from '@/components/searchResults'
 
 export default function Home() {
-  const {location, loading} = useCurrentLocation()
-  const [currentLocation, setCurrentLocation] = useState<location>(location)
-  const [locations, setLocations] = useState<locationSaved[]>([])
-  const [displayedLocation, setDisplayedLocation] = useState<location | locationSaved | null>(null)
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<searchType[]>([]);
-  const [isInputFocused, setIsInputFocused] = useState(false)
-  const [chosen, setChosen] = useState<locationSaved | null>(null)
+  const {location, loading} = useCurrentLocation() // custom hook to get current location
+  const [currentLocation, setCurrentLocation] = useState<location>(location) // state to store current location
+  const [locations, setLocations] = useState<locationSaved[]>([]) // state to store user's saved locations in localstorage
+  const [displayedLocation, setDisplayedLocation] = useState<location | locationSaved | null>(null) // state to store what location the user wants to display more info about
+  const [searchTerm, setSearchTerm] = useState<string>(''); // state to store what the user is searching for
+  const [searchResults, setSearchResults] = useState<searchType[]>([]); // state to store the results of the user's search
+  const [isInputFocused, setIsInputFocused] = useState(false) // state to store whether the search input is focused or not
+  const [chosen, setChosen] = useState<locationSaved | null>(null) // state to store the location the user has chosen from the search results
 
   useEffect(() => {
     setCurrentLocation(location);
@@ -26,7 +26,7 @@ export default function Home() {
         if (savedLocations) {
             setLocations(JSON.parse(savedLocations));
         }
-    }, [currentLocation])
+    }, [])
     
     useEffect(() => {
         if (locations.length > 0) {
@@ -47,7 +47,8 @@ export default function Home() {
     >     
       <LocationContext.Provider value={{loading, currentLocation, locations, setLocations, displayedLocation, setDisplayedLocation, setIsInputFocused}}>
         <Aside searchTerm={searchTerm} setSearchTerm={setSearchTerm} setSearchResults={setSearchResults} isInputFocused={isInputFocused} setIsInputFocused={setIsInputFocused}/>
-        {searchTerm !== "" && isInputFocused ? (
+        {// if the user is searching and the input is focused, display the search results if not display the weather data for selected location
+        searchTerm !== "" && isInputFocused ? (
           <SearchResults searchTerm={searchTerm} chosen={chosen} searchResults={searchResults} setChosen={setChosen} />
         ):
           displayedLocation !== null && <Weather />}

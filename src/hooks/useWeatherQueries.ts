@@ -17,11 +17,11 @@ export const useWeatherForSavedLocation = (location: locationSaved) => {
 }
 
 export const useWeatherForCurrentLocation = (location: location) => {
-
+    console.log(location)
     const { data, isLoading, isSuccess, isFetching, refetch } = useQuery<WeatherData| WeatherDataError>({
-        queryKey: ['weather', JSON.stringify(location.timestamp)],
+        queryKey: [JSON.stringify(location.timestamp)],
         queryFn: () => getWeatherForCurrentLocation(location?.city, location?.country_code),
-        enabled: location.loaded !== false,
+        enabled: location.loaded,
         staleTime: 0,
         refetchInterval: 1000* 60 * 5,
     })

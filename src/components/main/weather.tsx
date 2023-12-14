@@ -22,8 +22,6 @@ const Weather = () => {
   const {data, isFetching, isSuccess, refetch} = useWeatherForCurrentLocation(displayedLocation as location)
   const [weatherData, setWeatherData] = useState<WeatherData | WeatherDataError | undefined>(undefined)
 
-  console.log(displayedLocation)
-
   useEffect(() => {
     refetch()
   }, [displayedLocation, refetch])
