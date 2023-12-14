@@ -57,11 +57,10 @@ const useCurrentLocation = () => {
         
           getLocation()
         
-          const interval = setInterval(getLocation, 1000*60 *2)
+          const interval = setInterval(getLocation, 1000 * 60 *2)
         
           return () => clearInterval(interval);
     }, [])
-
 
   return {location, loading}
 }
