@@ -8,8 +8,6 @@ import { useLocationContext } from '@/contexts/LocationContext';
 const CurrentLocation = () => {
     const {currentLocation:loc, setDisplayedLocation, displayedLocation} = useLocationContext()
     const weatherQuery = useWeatherForCurrentLocation(loc as location)
-    console.log(loc)
-    console.log(weatherQuery)
     useEffect(() => {
         if(weatherQuery.isSuccess) {
             setDisplayedLocation(loc)
@@ -20,12 +18,13 @@ const CurrentLocation = () => {
 
     if(weatherQuery.isSuccess) {
         const weatherData = weatherQuery.data as WeatherData
+
         return (
             <button className={`flex flex-col bg-black p-4 rounded-3xl text-white  w-full box-border 
                 ${displayedLocation === loc ? 'focus:outline focus:outline-4 focus:outline-gray-500' : ''}`}
                 style={{boxShadow: displayedLocation === loc ? '0 0 0 4px #a0aec0'  : ''}}
                 onClick={() => {
-                    console.log('clicked')
+                    
                     setDisplayedLocation(loc)
                 }}  
                 autoFocus

@@ -10,7 +10,14 @@ export type location = {
     timestamp: string;
 }
 
-export type locationSaved ={
+export type locationSaved = {
+    id: string;
     city: string;
     country: string;
+}
+
+export type searchType = {
+    mapbox_id: string;
+    name: string;
+    place_formatted: string;
 }

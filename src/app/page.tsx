@@ -3,17 +3,19 @@ import { useEffect, useState } from 'react'
 import Weather from '../components/main/weather'
 import Aside from '../components/aside/aside'
 import useCurrentLocation from '@/hooks/useCurrentLocation'
-import { location, locationSaved } from '@/types/locationTypes'
+import { location, locationSaved, searchType } from '@/types/locationTypes'
 import { LocationContext } from '@/contexts/LocationContext'
-
+import SearchResults from '@/components/searchResults'
 
 export default function Home() {
-  const [city, setCity] = useState("")
-  const [fetchCity, setFetchCity] = useState('')
   const {location, loading} = useCurrentLocation()
   const [currentLocation, setCurrentLocation] = useState<location>(location)
   const [locations, setLocations] = useState<locationSaved[]>([])
   const [displayedLocation, setDisplayedLocation] = useState<location | locationSaved | null>(null)
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<searchType[]>([]);
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  const [chosen, setChosen] = useState<locationSaved | null>(null)
 
   useEffect(() => {
     setCurrentLocation(location);
@@ -43,9 +45,12 @@ export default function Home() {
       }}
       className='flex'
     >     
-      <LocationContext.Provider value={{loading, currentLocation, locations, setLocations, displayedLocation, setDisplayedLocation}}>
-        <Aside city={city} setCity={setCity} setFetchCity={setFetchCity} />
-        {displayedLocation !== null && <Weather />}
+      <LocationContext.Provider value={{loading, currentLocation, locations, setLocations, displayedLocation, setDisplayedLocation, setIsInputFocused}}>
+        <Aside searchTerm={searchTerm} setSearchTerm={setSearchTerm} setSearchResults={setSearchResults} isInputFocused={isInputFocused} setIsInputFocused={setIsInputFocused}/>
+        {searchTerm !== "" && isInputFocused ? (
+          <SearchResults searchTerm={searchTerm} chosen={chosen} searchResults={searchResults} setChosen={setChosen} />
+        ):
+          displayedLocation !== null && <Weather />}
       </LocationContext.Provider>
     </div>
   )

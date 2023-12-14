@@ -8,6 +8,7 @@ type LocationContextType = {
     setLocations: Dispatch<SetStateAction<locationSaved[]>>,
     displayedLocation: location | locationSaved | null,
     setDisplayedLocation: Dispatch<SetStateAction<location | locationSaved | null>>,
+    setIsInputFocused: Dispatch<SetStateAction<boolean>>
 }
 
 export const LocationContext = createContext<LocationContextType>({
@@ -17,6 +18,7 @@ export const LocationContext = createContext<LocationContextType>({
     setLocations: () => {},
     displayedLocation: null,
     setDisplayedLocation: () => {},
+    setIsInputFocused: () => {},
 });
 
 export function useLocationContext() {

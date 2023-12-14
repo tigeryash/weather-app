@@ -18,9 +18,15 @@ type WeatherStuff = {
 }
 
 const Weather = () => {
-  const {displayedLocation} = useLocationContext();
+  const {displayedLocation, currentLocation} = useLocationContext();
   const {data, isFetching, isSuccess, refetch} = useWeatherForCurrentLocation(displayedLocation as location)
   const [weatherData, setWeatherData] = useState<WeatherData | WeatherDataError | undefined>(undefined)
+
+  console.log(displayedLocation)
+
+  useEffect(() => {
+    refetch()
+  }, [displayedLocation, refetch])
 
   useEffect(() => {
   
@@ -33,7 +39,7 @@ const Weather = () => {
     const timer = setInterval(() => {
       refetch();
     }, 1000*60*5 );
-    console.log('refetching')
+    
     return () => clearTimeout(timer);
   }, [refetch]);
 
@@ -49,8 +55,8 @@ const Weather = () => {
         {isSuccess && 'weather' in weatherData && (
           <>
             <div>
-              {displayedLocation !== null && 'city' in displayedLocation ? 
-                (
+              {displayedLocation !== null && 'city' in displayedLocation?
+               'timestamp' in displayedLocation && displayedLocation.timestamp === currentLocation?.timestamp ?
                   <div
                     className='text-center'
                   >
@@ -77,13 +83,32 @@ const Weather = () => {
                       <span className="text-2xl">L:{Math.round(weatherData.main.temp_min)}&deg;</span>
                     </p>
                   </div>
-                )
-              : (
-                <p className="text-black text-lg font-semibold">
-                  MyLocation
-                </p>
-              )}
-              
+                :
+                <div
+                  className='text-center'
+                >
+                  <p
+                    className='text-4xl'
+                  >
+                    {displayedLocation?.city}
+                  </p>
+                  <h3 className='text-8xl font-thin'>
+                    {Math.round(weatherData.main.temp)}&deg;
+                  </h3>
+                  <p
+                    className='text-2xl capitalize'
+                  >
+                    {weatherData.weather[0]?.description}
+                  </p>
+                  <p>
+                    <span className="mr-4 text-2xl">H:{Math.round(weatherData.main.temp_max)}&deg;</span>
+                    <span className="text-2xl">L:{Math.round(weatherData.main.temp_min)}&deg;</span>
+                  </p>
+                </div>
+                :
+                null
+               }
+
             </div> 
             <div
               className='grid grid-cols-4 gap-6 w-full p-8'

@@ -7,7 +7,7 @@ export default function Provider({ children }: {children: ReactNode}) {
     const [queryClient] = useState(() => new QueryClient())
     return (
         <QueryClientProvider client={queryClient}>
-            {children}
+                {children}
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     )
