@@ -31,18 +31,18 @@ const CurrentLocation = () => {
             >
                 <div className="flex items-center justify-between w-full">
                     <div>
-                        <h2 className="text-2xl font-bold">My Location</h2>
-                        <p className='text-left'>{loc?.city}</p>
+                        <h2 className="lg:text-2xl md:text-lg font-bold">My Location</h2>
+                        <p className='text-left md:text-xs lg:text-base'>{loc?.city}</p>
                     </div>
 
-                    <p className="text-5xl">
+                    <p className="lg:text-5xl md:text-4xl">
                         {Math.round(weatherData.main?.temp)}&deg;
                     </p>
                 </div>
                 <div className="mt-6 flex justify-between w-full capitalize">
-                    <span className="">{weatherData.weather[0]?.description}</span>
+                    <span className="md:text-xs lg:text-base">{weatherData.weather[0]?.description}</span>
 
-                    <div className=''>
+                    <div className='md:text-xs lg:text-base'>
                         <span className="mr-2">H:{Math.round(weatherData.main.temp_max)}&deg;</span>
                         <span className="">L:{Math.round(weatherData.main.temp_min)}&deg;</span>
                     </div>

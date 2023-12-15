@@ -48,11 +48,11 @@ const Weather = () => {
   if(weatherData){
     return (
       <main
-        className='flex flex-col items-center justify-center text-white w-3/4'
+        className='flex flex-col items-center w-full text-white md:w-3/4'
       >
         {isSuccess && 'weather' in weatherData && (
           <>
-            <div>
+            <div className='pt-16 pb-24'>
               {displayedLocation !== null && 'city' in displayedLocation?
                'timestamp' in displayedLocation && displayedLocation.timestamp === currentLocation?.timestamp ?
                   <div
@@ -109,7 +109,7 @@ const Weather = () => {
 
             </div> 
             <div
-              className='grid grid-cols-4 gap-6 w-full p-8'
+              className='grid xl:grid-cols-4 sm:grid-cols-2 gap-6 w-full p-8 lg:p-12 xl:p-8'
             >
               <Wind deg={weatherData.wind.deg} speed={weatherData.wind.speed} />
               <Feels feels={weatherData.main.feels_like} />

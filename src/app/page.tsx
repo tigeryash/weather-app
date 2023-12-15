@@ -39,11 +39,10 @@ export default function Home() {
     <div
       style={{
         position: 'static',
-        height: '100vh',
         backgroundImage: "url('https://littlevisuals.co/images/atlantic_ridge.jpg')",
         backgroundSize: 'cover',
       }}
-      className='flex'
+      className='flex min-h-screen'
     >     
       <LocationContext.Provider value={{loading, currentLocation, locations, setLocations, displayedLocation, setDisplayedLocation, setIsInputFocused}}>
         <Aside searchTerm={searchTerm} setSearchTerm={setSearchTerm} setSearchResults={setSearchResults} isInputFocused={isInputFocused} setIsInputFocused={setIsInputFocused}/>

@@ -38,7 +38,7 @@ const Aside = ({searchTerm, setSearchTerm, setSearchResults, isInputFocused, set
 
   return (
     <aside
-        className='flex flex-col h-full w-1/4 bg-neutral-900 bg-opacity-[.8]
+        className='flex flex-col min-h-screen hidden md:block md:w-1/3 xl:w-1/4 bg-neutral-900 bg-opacity-[.8]
         text-white'
     >
         <div
@@ -62,7 +62,7 @@ const Aside = ({searchTerm, setSearchTerm, setSearchResults, isInputFocused, set
                         </button>
                     </div>
                     <h1
-                        className='text-4xl font-bold text-left mb-2'
+                        className='lg:text-4xl md:text-2xl font-bold text-left mb-2'
                     >Weather
                     </h1>
                 </>
