@@ -1,0 +1,36 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getWeather, getWeatherForCurrentLocation } from "../server/actions";
+import { WeatherData, WeatherDataError } from "../types/weatherTypes";
+import { locationSaved, location } from "../types/locationTypes";
+
+export const useWeatherForSavedLocation = (location: locationSaved) => {
+  const { data, isLoading, isSuccess, isFetching } = useQuery<
+    WeatherData | WeatherDataError
+  >({
+    queryKey: ["weather", JSON.stringify(location)],
+    queryFn: () => getWeather(location.city, location.country),
+    enabled: location.city !== "",
+    staleTime: 0,
+    refetchInterval: 1000 * 60 * 2,
+  });
+  return { data, isLoading, isSuccess, isFetching };
+};
+
+export const useWeatherForCurrentLocation = (location: location) => {
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, isSuccess, isFetching, refetch } = useQuery<
+    WeatherData | WeatherDataError
+  >({
+    queryKey: [JSON.stringify(location.timestamp)],
+    queryFn: () =>
+      getWeatherForCurrentLocation(location.city, location.country_code),
+    enabled: location.loaded,
+    staleTime: 0,
+    refetchInterval: 1000 * 60 * 2,
+  });
+
+  console.log(data);
+
+  return { data, isLoading, isSuccess, isFetching, refetch };
+};
