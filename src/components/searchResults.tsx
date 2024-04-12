@@ -9,12 +9,16 @@ const SearchResults = () => {
   const searchResults = useSearchStore((state) => state.searchResults);
   const setChosen = useSearchStore((state) => state.setChosen);
   const chosen = useSearchStore((state) => state.chosen);
+  const setSearchTerm = useSearchStore((state) => state.setSearch);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const setSearchResults = useSearchStore((state) => state.setSearchResults);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
     setChosen(null);
+    setSearchTerm("");
+    setSearchResults([]);
   };
   return (
     <main className="bg-[#2c2c2e] w-3/4 pl-6">

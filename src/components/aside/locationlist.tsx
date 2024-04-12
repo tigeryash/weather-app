@@ -1,6 +1,7 @@
 import { useLocationStore } from "@/stores/location-store";
 import CurrentLocation from "./currentLocation";
 import SavedLocation from "./savedLocation";
+import LocationListBtn from "./location-list-btn";
 
 const LocationList = () => {
   const locations = useLocationStore((state) => state.locations);
@@ -13,9 +14,9 @@ const LocationList = () => {
       <li>
         <CurrentLocation />
       </li>
-      {locations.map((loc, index) => (
+      {locations.map((loc) => (
         <li key={loc.id}>
-          <SavedLocation loc={loc} />
+          <LocationListBtn loc={loc} />
         </li>
       ))}
     </ul>

@@ -10,6 +10,7 @@ import { useWeatherForSavedLocation } from "@/hooks/useWeatherQueries";
 import { WeatherData, WeatherDataError } from "@/types/weatherTypes";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocationStore } from "@/stores/location-store";
+import { useSearchStore } from "@/stores/search-store";
 
 type ModalProps = {
   isOpen: boolean;
@@ -18,13 +19,14 @@ type ModalProps = {
 };
 
 const WeatherModal = ({ chosen, isOpen, closeModal }: ModalProps) => {
+  const setDisplayedLocation = useLocationStore(
+    (state) => state.setDisplayedLocation
+  );
   const locations = useLocationStore((state) => state.locations);
   const setSavedLocations = useLocationStore(
     (state) => state.setSavedLocations
   );
-  const setIsInputFocused = useLocationStore(
-    (state) => state.setIsInputFocused
-  );
+  const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
   const { data, isFetching, isSuccess } = useWeatherForSavedLocation(
     chosen as locationSaved
   );
@@ -41,8 +43,9 @@ const WeatherModal = ({ chosen, isOpen, closeModal }: ModalProps) => {
   const addData = () => {
     const locationstemp = [...locations, chosen as locationSaved];
     setSavedLocations(locationstemp);
-    setIsInputFocused(false);
     closeModal();
+    setIsInputFocused(false);
+    setDisplayedLocation(chosen);
   };
 
   if (!isOpen) {
