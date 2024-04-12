@@ -20,7 +20,7 @@ type LocationStoreType = {
 
 export const useLocationStore = create<LocationStoreType>((set) => ({
   locations: [],
-  loading: false,
+  loading: true,
   displayedLocation: null,
   isInputFocused: false,
   currentLocation: null,
