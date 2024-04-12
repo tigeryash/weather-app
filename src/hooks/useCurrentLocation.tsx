@@ -7,6 +7,9 @@ const useCurrentLocation = () => {
   const getLocation = useLocationStore((state) => state.getLocation);
   const onError = useLocationStore((state) => state.onError);
   const setLoading = useLocationStore((state) => state.setLoading);
+  const getSavedLocations = useLocationStore(
+    (state) => state.getSavedLocations
+  );
 
   useEffect(() => {
     console.log("useEffect");
@@ -15,7 +18,7 @@ const useCurrentLocation = () => {
       onError();
     }
     getLocation();
-    console.log("getting location");
+    getSavedLocations();
   }, []);
 
   return { currentLocation, loading };

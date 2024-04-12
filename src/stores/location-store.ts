@@ -16,9 +16,10 @@ type LocationStoreType = {
   error: locationError | null;
   onError: () => void;
   getLocation: () => void;
+  setIsInputFocused: (isInputFocused: boolean) => void;
 };
 
-export const useLocationStore = create<LocationStoreType>((set) => ({
+export const useLocationStore = create<LocationStoreType>((set, get) => ({
   locations: [],
   loading: true,
   displayedLocation: null,
@@ -28,6 +29,7 @@ export const useLocationStore = create<LocationStoreType>((set) => ({
   setDisplayedLocation: (displayedLocation) => set({ displayedLocation }),
   setLoading: (loading) => set({ loading }),
   setCurrentLocation: (currentLocation) => set({ currentLocation }),
+  setIsInputFocused: (isInputFocused) => set({ isInputFocused }),
   getSavedLocations: () => {
     const savedLocations = localStorage.getItem("locations");
     if (savedLocations) {
@@ -37,6 +39,7 @@ export const useLocationStore = create<LocationStoreType>((set) => ({
   setSavedLocations: (locations) => {
     localStorage.setItem("locations", JSON.stringify(locations));
     set({ locations });
+    console.log("locations", locations);
   },
   onError: () => {
     set({
