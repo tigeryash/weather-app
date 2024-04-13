@@ -3,8 +3,10 @@ import { location } from "../../types/locationTypes";
 import { useWeatherForCurrentLocation } from "@/hooks/useWeatherQueries";
 import { WeatherData } from "@/types/weatherTypes";
 import { useLocationStore } from "@/stores/location-store";
+import { useSearchStore } from "@/stores/search-store";
 
 const CurrentLocation = () => {
+  const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
   const loc = useLocationStore((state) => state.currentLocation);
   const setDisplayedLocation = useLocationStore(
     (state) => state.setDisplayedLocation
@@ -14,7 +16,7 @@ const CurrentLocation = () => {
   );
 
   const weatherQuery = useWeatherForCurrentLocation(loc as location);
-  console.log("running");
+
   useEffect(() => {
     if (weatherQuery.isSuccess) {
       setDisplayedLocation(loc);
@@ -38,6 +40,7 @@ const CurrentLocation = () => {
         }}
         onClick={() => {
           setDisplayedLocation(loc);
+          setIsInputFocused(false);
         }}
         autoFocus
       >

@@ -20,6 +20,10 @@ const SearchResults = () => {
     setSearchTerm("");
     setSearchResults([]);
   };
+  const cancelModal = () => {
+    setIsModalOpen(false);
+    setChosen(null);
+  };
   return (
     <main className="bg-[#2c2c2e] w-3/4 pl-6">
       <h1 className="text-5xl pt-12 pb-2 font-bold text-left border-b-2 border-[#4c4c4e] mb-4 text-white">
@@ -58,6 +62,7 @@ const SearchResults = () => {
           isOpen={isModalOpen}
           closeModal={closeModal}
           chosen={chosen}
+          cancelModal={cancelModal}
         />
       )}
     </main>

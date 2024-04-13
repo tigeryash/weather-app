@@ -29,9 +29,9 @@ const Search = () => {
           </h1>
         </>
       )}
-      <div className="relative text-neutral-400 flex gap-4">
+      <div className="relative text-neutral-400 flex gap-2">
         <input
-          className="bg-neutral-600 outline-none text-lg placeholder-text-lg rounded-lg w-full focus:w-[80%] p-2 px-8 text-neutral-200 placeholder-neutral-400"
+          className="bg-neutral-700 outline-none text-lg placeholder-text-lg rounded-lg w-full focus:w-[80%] p-2 px-8 text-neutral-200 hover:bg-neutral-600 placeholder-neutral-400 transition duration-250 ease-in-out"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
@@ -45,7 +45,7 @@ const Search = () => {
         <FaSearch className="absolute text-lg top-1/2 left-2 transform -translate-y-1/2" />
         {isInputFocused && (
           <button
-            className="text-neutral-200 text-lg"
+            className="text-neutral-200 text-lg hover:bg-neutral-500 hover:rounded-lg px-2"
             onClick={() => {
               setIsInputFocused(false);
               setSearchTerm("");

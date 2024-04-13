@@ -16,9 +16,15 @@ type ModalProps = {
   isOpen: boolean;
   closeModal: () => void;
   chosen: locationSaved | null;
+  cancelModal: () => void;
 };
 
-const WeatherModal = ({ chosen, isOpen, closeModal }: ModalProps) => {
+const WeatherModal = ({
+  chosen,
+  isOpen,
+  closeModal,
+  cancelModal,
+}: ModalProps) => {
   const setDisplayedLocation = useLocationStore(
     (state) => state.setDisplayedLocation
   );
@@ -62,7 +68,7 @@ const WeatherModal = ({ chosen, isOpen, closeModal }: ModalProps) => {
         className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center"
         onClick={(e) => {
           e.stopPropagation();
-          closeModal();
+          cancelModal();
         }}
       >
         <AnimatePresence>
@@ -77,7 +83,7 @@ const WeatherModal = ({ chosen, isOpen, closeModal }: ModalProps) => {
               transition={{ ease: "easeInOut", duration: 0.4 }}
             >
               <div className="flex justify-between">
-                <button className="text-white text-lg" onClick={closeModal}>
+                <button className="text-white text-lg" onClick={cancelModal}>
                   Cancel
                 </button>
                 {!locations.some(

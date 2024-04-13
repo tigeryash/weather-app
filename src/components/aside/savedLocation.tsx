@@ -3,6 +3,7 @@ import { useWeatherForSavedLocation } from "@/hooks/useWeatherQueries";
 import { WeatherData } from "@/types/weatherTypes";
 import { useLocationStore } from "@/stores/location-store";
 import { motion } from "framer-motion";
+import { useSearchStore } from "@/stores/search-store";
 
 type LocationProps = {
   loc: locationSaved;
@@ -11,6 +12,7 @@ type LocationProps = {
 };
 
 const SavedLocation = ({ loc, setDragOffset, dragOffset }: LocationProps) => {
+  const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
   const displayedLocation = useLocationStore(
     (state) => state.displayedLocation
   );
@@ -31,6 +33,10 @@ const SavedLocation = ({ loc, setDragOffset, dragOffset }: LocationProps) => {
         onDrag={(event, info) => {
           setDragOffset(info.offset.x);
         }}
+        dragElastic={{
+          right: 0,
+          left: 0.5,
+        }}
         onDragEnd={() => {
           if (dragOffset < 0) {
             setDragOffset(-100);
@@ -49,6 +55,7 @@ const SavedLocation = ({ loc, setDragOffset, dragOffset }: LocationProps) => {
         }}
         onClick={() => {
           setDisplayedLocation(loc);
+          setIsInputFocused(false);
         }}
       >
         <div className="flex justify-between w-full">
