@@ -11,11 +11,11 @@ const LocationList = () => {
 
   return (
     <ul className="px-4 py-2 overflow-y-auto">
-      <li>
+      <li className="p-1">
         <CurrentLocation />
       </li>
       {locations.map((loc) => (
-        <li key={loc.id}>
+        <li className="overflow-hidden p-1" key={loc.id}>
           <LocationListBtn loc={loc} />
         </li>
       ))}
