@@ -2,12 +2,15 @@ import { locationSaved } from "../../types/locationTypes";
 import { useWeatherForSavedLocation } from "@/hooks/useWeatherQueries";
 import { WeatherData } from "@/types/weatherTypes";
 import { useLocationStore } from "@/stores/location-store";
+import { motion } from "framer-motion";
 
 type LocationProps = {
   loc: locationSaved;
+  setDragOffset: (offset: number) => void;
+  dragOffset: number;
 };
 
-const SavedLocation = ({ loc }: LocationProps) => {
+const SavedLocation = ({ loc, setDragOffset, dragOffset }: LocationProps) => {
   const displayedLocation = useLocationStore(
     (state) => state.displayedLocation
   );
@@ -21,8 +24,21 @@ const SavedLocation = ({ loc }: LocationProps) => {
   if (weatherQuery.isSuccess) {
     const weatherData = weatherQuery.data as WeatherData;
     return (
-      <button
-        className={`flex flex-col bg-black p-4 rounded-3xl text-white mt-4 w-full box-border 
+      <motion.button
+        drag="x"
+        dragMomentum={false}
+        dragConstraints={{ left: 0, right: 0 }}
+        onDrag={(event, info) => {
+          setDragOffset(info.offset.x);
+        }}
+        onDragEnd={() => {
+          if (dragOffset < 0) {
+            setDragOffset(-100);
+          } else {
+            setDragOffset(0);
+          }
+        }}
+        className={`flex flex-col bg-black p-4 rounded-3xl text-white mt-4 w-[448px] box-border 
             ${
               displayedLocation === loc
                 ? "focus:outline focus:outline-4 focus:outline-gray-500"
@@ -58,7 +74,7 @@ const SavedLocation = ({ loc }: LocationProps) => {
             </span>
           </div>
         </div>
-      </button>
+      </motion.button>
     );
   }
 };
