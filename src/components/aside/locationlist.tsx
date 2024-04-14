@@ -12,7 +12,7 @@ const LocationList = () => {
 
   return (
     <ul className="px-4 py-2 overflow-y-auto">
-      {error !== null && (
+      {error === null && (
         <li className="p-1">
           <CurrentLocation />
         </li>

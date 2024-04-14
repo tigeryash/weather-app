@@ -16,10 +16,10 @@ const useCurrentLocation = () => {
     setLoading(true);
     if (!("geolocation" in navigator)) {
       onError();
+      return;
     }
     getLocation();
     getSavedLocations();
-    setLoading(false);
   }, []);
 
   return { currentLocation, loading };
