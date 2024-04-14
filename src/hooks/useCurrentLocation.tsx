@@ -19,6 +19,7 @@ const useCurrentLocation = () => {
     }
     getLocation();
     getSavedLocations();
+    setLoading(false);
   }, []);
 
   return { currentLocation, loading };

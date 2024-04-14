@@ -6,14 +6,17 @@ import { AnimatePresence, motion } from "framer-motion";
 const LocationList = () => {
   const locations = useLocationStore((state) => state.locations);
   const loading = useLocationStore((state) => state.loading);
+  const error = useLocationStore((state) => state.error);
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <ul className="px-4 py-2 overflow-y-auto">
-      <li className="p-1">
-        <CurrentLocation />
-      </li>
+      {error !== null && (
+        <li className="p-1">
+          <CurrentLocation />
+        </li>
+      )}
       <AnimatePresence>
         {locations.map((loc) => (
           <motion.li
