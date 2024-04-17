@@ -1,45 +1,18 @@
-import React from 'react'
 import { LiaTemperatureHighSolid } from "react-icons/lia";
+import SectionHeader from "./section-header";
+import SectionContainer from "./section-container";
+import SectionBody from "./section-body";
 
-
-const Feels = ({feels}: {feels:number}) => {
-  
+const Feels = ({ feels }: { feels: number }) => {
   return (
-    <section
-      className='rounded-2xl p-4'
-      style={{ backdropFilter: 'blur(10px)',
-      backgroundColor: 'rgba(173, 216, 230, 0.45)'
-    }}
-    >
-      <div
-        className='flex items-center pb-2'
-      >
-        <LiaTemperatureHighSolid
-          className='w-6 h-6 mr-2 text-white'
-          />
-        
-        <h2
-          className='uppercase'
-        >Feels Like</h2>
-      </div>
+    <SectionContainer>
+      <SectionHeader title="Feels Like">
+        <LiaTemperatureHighSolid className="w-6 h-6 mr-2 text-white" />
+      </SectionHeader>
 
-      <div
-        className='h-32'
-      >
-        <p
-          className='text-5xl font-light'
-        >
-          {Math.round(feels)}&deg;
-        </p>
-      </div>
+      <SectionBody lorem={true}>{Math.round(feels)}&deg;</SectionBody>
+    </SectionContainer>
+  );
+};
 
-      <p
-        className=''
-      >
-        Lorem ipsum dolor 
-      </p>
-    </section>
-  )
-}
-
-export default Feels
+export default Feels;

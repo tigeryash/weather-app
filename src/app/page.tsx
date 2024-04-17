@@ -5,6 +5,7 @@ import SearchResults from "@/components/searchResults";
 import { useSearchStore } from "@/stores/search-store";
 import { useLocationStore } from "@/stores/location-store";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
+import Loading from "./loading";
 
 export default function Home() {
   const searchTerm = useSearchStore((state) => state.search);
@@ -24,9 +25,7 @@ export default function Home() {
       className="flex min-h-screen"
     >
       {loading ? (
-        <div className="flex justify-center items-center w-full h-full">
-          <p className="text-2xl">Loading...</p>
-        </div>
+        <Loading />
       ) : (
         <>
           <Aside />

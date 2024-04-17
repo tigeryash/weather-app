@@ -1,21 +1,24 @@
-import {useState} from 'react'
+import { useState } from "react";
+import SectionContainer from "./section-container";
+import SectionHeader from "./section-header";
+import Image from "next/image";
+import SectionBody from "./section-body";
 
-const Pressure = ({pressure}: {pressure:number}) => {
+const Pressure = ({ pressure }: { pressure: number }) => {
+  const units = ["hPa", "mbar", "inHg", "mmHg", "kPa"];
+  const [currentUnit, setCurrentUnit] = useState(0);
 
-  const units = ['hPa' , 'mbar' , 'inHg' , 'mmHg' , 'kPa']
-  const [ currentUnit, setCurrentUnit ] = useState(0)
-
-  function convertPressure(pressure: number, unit:string ): number {
+  function convertPressure(pressure: number, unit: string): number {
     switch (unit) {
-      case 'hPa':
+      case "hPa":
         return pressure;
-      case 'mbar':
+      case "mbar":
         return pressure; // hPa and mbar are equivalent
-      case 'inHg':
+      case "inHg":
         return pressure * 0.02953; // 1 hPa = 0.02953 inHg
-      case 'mmHg':
+      case "mmHg":
         return pressure * 0.75006; // 1 hPa = 0.75006 mmHg
-      case 'kPa':
+      case "kPa":
         return pressure * 0.1; // 1 hPa = 0.1 kPa
       default:
         throw new Error(`Unknown unit: ${unit}`);
@@ -23,37 +26,26 @@ const Pressure = ({pressure}: {pressure:number}) => {
   }
 
   const handleClick = () => {
-    setCurrentUnit((currentUnit + 1) % units.length)
-  }
+    setCurrentUnit((currentUnit + 1) % units.length);
+  };
 
   return (
-    <section
-      className='rounded-2xl p-4'
-      style={{ backdropFilter: 'blur(10px)',
-      backgroundColor: 'rgba(173, 216, 230, 0.45)'
-    }}
-    onClick={handleClick}
-    >
-      <div
-        className='flex items-center pb-2'
-      >
-        <h2
-          className='uppercase'
-        >Pressure</h2>
-      </div>
+    <SectionContainer handleClick={handleClick}>
+      <SectionHeader title="Pressure">
+        <Image
+          src="/pressure.svg"
+          alt="pressure"
+          width={20}
+          height={20}
+          className="w-6 h-6 mr-2 text-white"
+        />
+      </SectionHeader>
+      <SectionBody lorem={false}>
+        {Math.round(convertPressure(pressure, units[currentUnit]))}
+        <span className="text-2xl">{units[currentUnit]}</span>
+      </SectionBody>
+    </SectionContainer>
+  );
+};
 
-      <div
-        className='h-32'
-      >
-        <p
-          className='text-4xl font-light'
-        >
-          {Math.round(convertPressure(pressure, units[currentUnit]))}<span className='text-2xl'>{units[currentUnit]}</span>
-        </p>
-      </div>
-
-    </section>
-  )
-}
-
-export default Pressure
+export default Pressure;

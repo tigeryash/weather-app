@@ -50,44 +50,46 @@ const Weather = () => {
       <main className="flex flex-col items-center w-full text-white md:w-3/4">
         {isSuccess && "weather" in weatherData && (
           <>
-            <div className="pt-16 pb-24">
+            <div className="pt-12 md:pt-16 pb-8 md:pb-24">
               {displayedLocation !== null && "city" in displayedLocation ? (
                 "timestamp" in displayedLocation &&
                 displayedLocation.timestamp === currentLocation?.timestamp ? (
                   <div className="text-center">
-                    <p className="text-4xl">My Location</p>
-                    <p className="uppercase font-semibold">
+                    <p className="text-3xl md:text-4xl">My Location</p>
+                    <p className="text-sm md:text-base uppercase font-semibold">
                       {displayedLocation?.city}
                     </p>
-                    <h3 className="text-8xl font-thin">
+                    <h3 className="text-7xl md:text-8xl font-extralight ">
                       {Math.round(weatherData.main.temp)}&deg;
                     </h3>
-                    <p className="text-2xl capitalize">
+                    <p className="text-lg md:text-2xl capitalize">
                       {weatherData.weather[0]?.description}
                     </p>
                     <p>
-                      <span className="mr-4 text-2xl">
+                      <span className="mr-4 text-lg md:text-2xl">
                         H:{Math.round(weatherData.main.temp_max)}&deg;
                       </span>
-                      <span className="text-2xl">
+                      <span className="text-lg md:text-2xl">
                         L:{Math.round(weatherData.main.temp_min)}&deg;
                       </span>
                     </p>
                   </div>
                 ) : (
                   <div className="text-center">
-                    <p className="text-4xl">{displayedLocation?.city}</p>
-                    <h3 className="text-8xl font-thin">
+                    <p className="text-3xl md:text-4xl">
+                      {displayedLocation?.city}
+                    </p>
+                    <h3 className="text-7xl md:text-8xl font-extralight ">
                       {Math.round(weatherData.main.temp)}&deg;
                     </h3>
-                    <p className="text-2xl capitalize">
+                    <p className="text-lg md:text-2xl capitalize">
                       {weatherData.weather[0]?.description}
                     </p>
                     <p>
-                      <span className="mr-4 text-2xl">
+                      <span className="mr-4 text-lg md:text-2xl">
                         H:{Math.round(weatherData.main.temp_max)}&deg;
                       </span>
-                      <span className="text-2xl">
+                      <span className="text-lg md:text-2xl">
                         L:{Math.round(weatherData.main.temp_min)}&deg;
                       </span>
                     </p>
@@ -95,7 +97,7 @@ const Weather = () => {
                 )
               ) : null}
             </div>
-            <div className="grid xl:grid-cols-4 sm:grid-cols-2 gap-6 w-full p-8 lg:p-12 xl:p-8">
+            <div className="grid xl:grid-cols-4 sm:grid-cols-2 gap-6 w-full p-4 md:p-8 lg:p-12 xl:p-8">
               <Wind deg={weatherData.wind.deg} speed={weatherData.wind.speed} />
               <Feels feels={weatherData.main.feels_like} />
               <Sunrise
