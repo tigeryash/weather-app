@@ -5,8 +5,8 @@ import axios from "axios";
 type SearchStoreType = {
   search: string;
   setSearch: (search: string) => void;
-  setSearchResults: (searchResults: searchType[]) => void;
-  searchResults: searchType[];
+  setSearchResults: (searchResults: locationSaved[]) => void;
+  searchResults: locationSaved[];
   isInputFocused: boolean;
   setIsInputFocused: (isInputFocused: boolean) => void;
   chosen: locationSaved | null;
@@ -29,9 +29,10 @@ export const useSearchStore = create<SearchStoreType>((set) => ({
     );
     const results = response.data.suggestions.map((result: searchType) => {
       return {
-        name: result.name,
-        place_formatted: result.place_formatted,
-        mapbox_id: result.mapbox_id,
+        id: result.mapbox_id,
+        city: result.name,
+        country: result.context.country.name,
+        region: result.context.region?.name,
       };
     });
     set({ searchResults: results });

@@ -25,6 +25,7 @@ const WeatherModal = ({
   closeModal,
   cancelModal,
 }: ModalProps) => {
+  //Zustand
   const setDisplayedLocation = useLocationStore(
     (state) => state.setDisplayedLocation
   );
@@ -33,13 +34,18 @@ const WeatherModal = ({
     (state) => state.setSavedLocations
   );
   const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
+  console.log(chosen);
+  //React-Query
   const { data, isFetching, isSuccess } = useWeatherForSavedLocation(
     chosen as locationSaved
   );
+
+  //UseState
   const [weatherData, setWeatherData] = useState<
     WeatherData | WeatherDataError | undefined
   >(undefined);
 
+  //UseEffect
   useEffect(() => {
     if (isSuccess) {
       setWeatherData(data as WeatherData);
@@ -124,20 +130,34 @@ const WeatherModal = ({
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-6 w-full px-20">
-                    <Wind
-                      deg={weatherData.wind.deg}
-                      speed={weatherData.wind.speed}
-                    />
-                    <Feels feels={weatherData.main.feels_like} />
-                    <Sunrise
-                      rise={weatherData.sys.sunrise}
-                      set={weatherData.sys.sunset}
-                      timezone={`${weatherData.timezone}`}
-                    />
-                    <Pressure pressure={weatherData.main.pressure} />
-                    <Humidity humid={weatherData.main.humidity} />
-                    <Visibility visible={weatherData.visibility} />
+                  <div className="grid grid-cols-2 gap-2 md:gap-6 w-full px-20">
+                    <div className="col-span-2">
+                      <Wind
+                        deg={weatherData.wind.deg}
+                        speed={weatherData.wind.speed}
+                      />
+                    </div>
+
+                    <div className="col-span-1 ">
+                      <Feels feels={weatherData.main.feels_like} />
+                    </div>
+                    <div className="col-span-1">
+                      <Sunrise
+                        rise={weatherData.sys.sunrise}
+                        set={weatherData.sys.sunset}
+                        timezone={`${weatherData.timezone}`}
+                      />
+                    </div>
+                    <div className="col-span-1 ">
+                      <Pressure pressure={weatherData.main.pressure} />
+                    </div>
+                    <div className="col-span-1 ">
+                      <Humidity humid={weatherData.main.humidity} />
+                    </div>
+
+                    <div className="col-span-1">
+                      <Visibility visible={weatherData.visibility} />
+                    </div>
                   </div>
                 </>
               )}

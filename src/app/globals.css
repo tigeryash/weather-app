@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.icon {
+  @apply w-4 h-4 md:w-6 md:h-6 mr-2 text-white;
+}
+
+.text-sizes {
+  @apply text-sm md:text-base;
+}

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { searchType } from "@/types/locationTypes";
+import { locationSaved } from "@/types/locationTypes";
 import WeatherModal from "./weatherModal";
 import { useSearchStore } from "@/stores/search-store";
 
@@ -30,29 +30,30 @@ const SearchResults = () => {
         {`Results for "${searchTerm}"`}
       </h1>
       <ul>
-        {searchResults.map((result: searchType) => {
-          const index = result.name
+        {searchResults.map((result: locationSaved) => {
+          const index = result.city
             .toLowerCase()
             .indexOf(searchTerm.toLowerCase());
-          const before = result.name.slice(0, index);
-          const match = result.name.slice(index, index + searchTerm.length);
-          const after = result.name.slice(index + searchTerm.length);
+          const before = result.city.slice(0, index);
+          const match = result.city.slice(index, index + searchTerm.length);
+          const after = result.city.slice(index + searchTerm.length);
           return (
             <li
               className=" py-3 text-[#9d9ea7] font-bold text-2xl"
-              key={result.mapbox_id}
+              key={result.id}
               onClick={() => {
                 setChosen({
-                  id: result.mapbox_id,
-                  city: result.name,
-                  country: result.place_formatted,
+                  id: result.id,
+                  city: result.city,
+                  country: result.country,
+                  region: result.region,
                 });
                 openModal();
               }}
             >
               {before}
               <span className="text-white">{match}</span>
-              {after} {result.place_formatted}
+              {after} {result.region} {result.country}
             </li>
           );
         })}

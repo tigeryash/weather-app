@@ -10,8 +10,8 @@ export const useWeatherForSavedLocation = (location: locationSaved) => {
     queryKey: ["weather", JSON.stringify(location)],
     queryFn: () => getWeather(location.city, location.country),
     enabled: location.city !== "",
-    staleTime: 0,
-    refetchInterval: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 10,
+    refetchInterval: 1000 * 60 * 10,
   });
   return { data, isLoading, isSuccess, isFetching };
 };
@@ -26,11 +26,9 @@ export const useWeatherForCurrentLocation = (location: location) => {
     queryFn: () =>
       getWeatherForCurrentLocation(location.city, location.country_code),
     enabled: location.loaded,
-    staleTime: 0,
-    refetchInterval: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 10,
+    refetchInterval: 1000 * 60 * 10,
   });
-
-  console.log(data);
 
   return { data, isLoading, isSuccess, isFetching, refetch };
 };

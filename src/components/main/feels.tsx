@@ -7,7 +7,7 @@ const Feels = ({ feels }: { feels: number }) => {
   return (
     <SectionContainer>
       <SectionHeader title="Feels Like">
-        <LiaTemperatureHighSolid className="w-6 h-6 mr-2 text-white" />
+        <LiaTemperatureHighSolid className="icon" />
       </SectionHeader>
 
       <SectionBody lorem={true}>{Math.round(feels)}&deg;</SectionBody>

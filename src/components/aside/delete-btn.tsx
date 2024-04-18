@@ -10,6 +10,10 @@ type LocationListBtnProps = {
 
 const DeleteBtn = ({ loc, dragOffset }: LocationListBtnProps) => {
   const deleteLocation = useLocationStore((state) => state.deleteLocation);
+  const setDisplayedLocation = useLocationStore(
+    (state) => state.setDisplayedLocation
+  );
+  const locations = useLocationStore((state) => state.locations);
 
   return (
     <motion.button
@@ -20,7 +24,9 @@ const DeleteBtn = ({ loc, dragOffset }: LocationListBtnProps) => {
         paddingRight: Math.min(Math.abs(dragOffset), 400), // adjust 100 to your preferred max width
       }}
       className="bg-red-500 px-6 py-[3.25rem] mt-4 rounded-3xl text-2xl box-border "
-      onClick={() => deleteLocation(loc)}
+      onClick={() => {
+        deleteLocation(loc);
+      }}
     >
       <BsTrash3Fill className="text-white" />
     </motion.button>

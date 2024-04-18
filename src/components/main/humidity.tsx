@@ -13,7 +13,7 @@ const Humidity = ({ humid }: { humid: number }) => {
           alt="humidity"
           width={20}
           height={20}
-          className="w-6 h-6 mr-2 text-white"
+          className="icon"
         />
       </SectionHeader>
 

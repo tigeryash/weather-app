@@ -10,6 +10,7 @@ import Sunrise from "./sunrise";
 import Feels from "./feels";
 import Wind from "./wind";
 import { useLocationStore } from "@/stores/location-store";
+import WeatherLoading from "./weather-loading";
 
 const Weather = () => {
   const displayedLocation = useLocationStore(
@@ -36,12 +37,12 @@ const Weather = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       refetch();
-    }, 1000 * 60 * 5);
+    }, 1000 * 60 * 10);
 
     return () => clearTimeout(timer);
   }, [refetch]);
 
-  if (isFetching) return <div>Loading...</div>;
+  if (isFetching) return <WeatherLoading />;
 
   if (weatherData === undefined) return <div>Weather data is undefined</div>;
 
@@ -97,17 +98,34 @@ const Weather = () => {
                 )
               ) : null}
             </div>
-            <div className="grid xl:grid-cols-4 sm:grid-cols-2 gap-6 w-full p-4 md:p-8 lg:p-12 xl:p-8">
-              <Wind deg={weatherData.wind.deg} speed={weatherData.wind.speed} />
-              <Feels feels={weatherData.main.feels_like} />
-              <Sunrise
-                rise={weatherData.sys.sunrise}
-                set={weatherData.sys.sunset}
-                timezone={`${weatherData.timezone}`}
-              />
-              <Pressure pressure={weatherData.main.pressure} />
-              <Humidity humid={weatherData.main.humidity} />
-              <Visibility visible={weatherData.visibility} />
+            <div className="grid xl:grid-cols-4 grid-cols-2 gap-2 md:gap-6 w-full p-4 md:p-8 lg:p-12 xl:p-8">
+              <div className="col-span-2">
+                <Wind
+                  deg={weatherData.wind.deg}
+                  speed={weatherData.wind.speed}
+                />
+              </div>
+
+              <div className="col-span-1 ">
+                <Feels feels={weatherData.main.feels_like} />
+              </div>
+              <div className="col-span-1">
+                <Sunrise
+                  rise={weatherData.sys.sunrise}
+                  set={weatherData.sys.sunset}
+                  timezone={`${weatherData.timezone}`}
+                />
+              </div>
+              <div className="col-span-1 ">
+                <Pressure pressure={weatherData.main.pressure} />
+              </div>
+              <div className="col-span-1 ">
+                <Humidity humid={weatherData.main.humidity} />
+              </div>
+
+              <div className="col-span-1">
+                <Visibility visible={weatherData.visibility} />
+              </div>
             </div>
           </>
         )}

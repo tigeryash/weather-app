@@ -66,40 +66,44 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
   return (
     <SectionContainer handleClick={handleClick}>
       <SectionHeader title="Wind">
-        <FaWind className="w-6 h-6 mr-2 text-white" />
+        <FaWind className="icon" />
       </SectionHeader>
 
-      <div className="flex gap-4">
-        <div className="h-32 w-[57%]">
-          <div className="flex border-b py-4 border-white">
-            <p className="text-5xl mr-2 ">
+      <div className="flex justify-between">
+        <div className="h-20 md:h-32 w-[57%]">
+          <div className="flex border-b py-2 md:py-4 border-white/60">
+            <p className="text-4xl md:text-5xl mr-2 ">
               {convertSpeed(speed) < 10
                 ? `\u00A0${Math.round(convertSpeed(speed))}`
                 : Math.round(convertSpeed(speed))}
             </p>
 
-            <p className="flex flex-col">
-              <span className="uppercase">{units[currentUnit]}</span>
-              <span className="capitalize">wind</span>
+            <p className="flex flex-col justify-center">
+              <span className="md:text-base text-xs uppercase">
+                {units[currentUnit]}
+              </span>
+              <span className="md:text-base text-xs capitalize">wind</span>
             </p>
           </div>
 
-          <div className="flex py-4">
-            <p className="text-5xl font-light mr-2 ">XX</p>
+          <div className="flex py-2 md:py-4">
+            <p className="text-3xl md:text-5xl font-light mr-2 ">XX</p>
 
-            <p className="flex flex-col">
-              <span className="uppercase">{units[currentUnit]}</span>
-              <span className="capitalize">gusts</span>
+            <p className="flex flex-col justify-center">
+              <span className="md:text-base text-xs uppercase">
+                {units[currentUnit]}
+              </span>
+              <span className="md:text-base text-xs capitalize">gusts</span>
             </p>
           </div>
         </div>
-        <div className="relative w-1/3 h-36 ml-6 mt-2 text-center flex items-center justify-center ">
+        <div className="relative w-1/3 h-24 md:h-32 md:ml-6 text-center flex items-center justify-center ">
           {/*<TbArrowUpCircle 
             className='w-40 h-40 text-white'
             style={{transform: `rotate(${deg}deg)`}}
           />*/}
           <div
-            className="absolute flex items-center justify-center p-4 rounded-full w-16 h-16 text-center text-xl"
+            className="absolute flex items-center justify-center p-4 rounded-full  w-12 h-12 md:w-16 md:h-16 text-center text-base md:text-xl"
             style={{
               backdropFilter: "blur(10px)",
               backgroundColor: "rgba(173, 216, 230)",
@@ -109,14 +113,14 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
           </div>
           <div style={{ transform: `rotate(${(deg + 180) % 360}deg)` }}>
             <MdArrowDropUp
-              className="absolute bottom-4 -left-8 w-16 h-16 text-white"
+              className="absolute bottom-4 -left-5 md:-left-8 w-10 h-10 md:w-16 md:h-16 text-white"
               style={{ transformOrigin: "center" }}
             />
           </div>
-          <div className="absolute -top-2">N</div>
-          <div className="absolute -right-2">E</div>
-          <div className="absolute -bottom-2">S</div>
-          <div className="absolute -left-2">W</div>
+          <div className="absolute -top-2 text-sizes">N</div>
+          <div className="absolute -right-2 text-sizes">E</div>
+          <div className="absolute -bottom-2 text-sizes">S</div>
+          <div className="absolute -left-2 text-sizes">W</div>
         </div>
       </div>
     </SectionContainer>

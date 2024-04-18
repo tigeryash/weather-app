@@ -65,7 +65,6 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
           country_code: components["ISO_3166-1_alpha-2"],
           timestamp: res.data.timestamp.created_http,
         };
-        console.log(temp);
         set({ currentLocation: temp });
         set({ displayedLocation: temp });
         set({ loading: false });

@@ -24,17 +24,17 @@ const Sunrise = ({
 
   return (
     <SectionContainer>
-      <SectionHeader title={!isDay ? "Sunset" : "Sunrise"}>
-        {isDay ? (
-          <FiSunrise className="w-6 h-6 mr-2 text-white" />
+      <SectionHeader title={!isDay ? "Sunrise" : "Sunset"}>
+        {!isDay ? (
+          <FiSunrise className="icon" />
         ) : (
-          <FiSunset className="w-6 h-6 mr-2 text-white" />
+          <FiSunset className="icon" />
         )}
       </SectionHeader>
 
-      <div className="h-32">
-        <p className="text-4xl font-light">
-          {!isDay
+      <div className="h-20 md:h-32">
+        <p className="text-2xl sm:3xl md:text-5xl font-light">
+          {isDay
             ? new Date(sunsetLocal)
                 .toLocaleTimeString("en-US", {
                   hour: "2-digit",
@@ -54,8 +54,8 @@ const Sunrise = ({
         </p>
       </div>
 
-      <p className="">
-        {isDay
+      <p className="min-h-[1em] text-xs md:text-base lg:text-lg">
+        {!isDay
           ? `Sunset: ${new Date(sunsetLocal)
               .toLocaleTimeString("en-US", {
                 hour: "2-digit",

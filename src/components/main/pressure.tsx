@@ -37,7 +37,7 @@ const Pressure = ({ pressure }: { pressure: number }) => {
           alt="pressure"
           width={20}
           height={20}
-          className="w-6 h-6 mr-2 text-white"
+          className="icon"
         />
       </SectionHeader>
       <SectionBody lorem={false}>

@@ -18,7 +18,7 @@ const Visibility = ({ visible }: { visible: number }) => {
   return (
     <SectionContainer handleClick={handleClick}>
       <SectionHeader title="Visibility">
-        <MdVisibility className="w-6 h-6 mr-2 text-white" />
+        <MdVisibility className="icon" />
       </SectionHeader>
 
       <SectionBody lorem={true}>{convert}</SectionBody>
