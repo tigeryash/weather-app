@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getWeather, getWeatherForCurrentLocation } from "../server/actions";
 import { WeatherData, WeatherDataError } from "../types/weatherTypes";
 import { locationSaved, location } from "../types/locationTypes";
@@ -17,8 +17,6 @@ export const useWeatherForSavedLocation = (location: locationSaved) => {
 };
 
 export const useWeatherForCurrentLocation = (location: location) => {
-  const queryClient = useQueryClient();
-
   const { data, isLoading, isSuccess, isFetching, refetch } = useQuery<
     WeatherData | WeatherDataError
   >({

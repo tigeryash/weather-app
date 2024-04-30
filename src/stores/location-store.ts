@@ -53,7 +53,6 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        console.log(latitude, longitude);
         const res = await axios.get(
           `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`
         );

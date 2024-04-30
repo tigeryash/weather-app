@@ -12,7 +12,6 @@ const useCurrentLocation = () => {
   );
 
   useEffect(() => {
-    console.log("useEffect");
     setLoading(true);
     if (!("geolocation" in navigator)) {
       onError();

@@ -69,7 +69,7 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
         <FaWind className="icon" />
       </SectionHeader>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-2 md:mb-7">
         <div className="h-20 md:h-32 w-[57%]">
           <div className="flex border-b py-2 md:py-4 border-white/60">
             <p className="text-4xl md:text-5xl mr-2 ">

@@ -11,6 +11,7 @@ import Feels from "./feels";
 import Wind from "./wind";
 import { useLocationStore } from "@/stores/location-store";
 import WeatherLoading from "./weather-loading";
+import { motion, useAnimation } from "framer-motion";
 
 const Weather = () => {
   const displayedLocation = useLocationStore(
@@ -24,9 +25,19 @@ const Weather = () => {
     WeatherData | WeatherDataError | undefined
   >(undefined);
 
+  const controls = useAnimation();
+
   useEffect(() => {
-    refetch();
-  }, [displayedLocation, refetch]);
+    const sequence = async () => {
+      await controls.start({ opacity: 0, scale: 0.95 });
+      await controls.start({
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 0.1 },
+      });
+    };
+    sequence();
+  }, [displayedLocation, controls]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -45,10 +56,14 @@ const Weather = () => {
   if (isFetching) return <WeatherLoading />;
 
   if (weatherData === undefined) return <div>Weather data is undefined</div>;
-
   if (weatherData) {
+    console.log(weatherData);
     return (
-      <main className="flex flex-col items-center w-full text-white md:w-3/4">
+      <motion.main
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={controls}
+        className="flex flex-col items-center w-full text-white md:w-3/4"
+      >
         {isSuccess && "weather" in weatherData && (
           <>
             <div className="pt-12 md:pt-16 pb-8 md:pb-24">
@@ -129,7 +144,7 @@ const Weather = () => {
             </div>
           </>
         )}
-      </main>
+      </motion.main>
     );
   }
 };

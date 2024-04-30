@@ -1,14 +1,15 @@
 import { useLocationStore } from "@/stores/location-store";
-import { locationSaved } from "@/types/locationTypes";
+import { location, locationSaved } from "@/types/locationTypes";
 import { BsTrash3Fill } from "react-icons/bs";
 import { motion } from "framer-motion";
 
 type LocationListBtnProps = {
   loc: locationSaved;
   dragOffset: number;
+  prevLoc: locationSaved | location | null;
 };
 
-const DeleteBtn = ({ loc, dragOffset }: LocationListBtnProps) => {
+const DeleteBtn = ({ loc, dragOffset, prevLoc }: LocationListBtnProps) => {
   const deleteLocation = useLocationStore((state) => state.deleteLocation);
   const setDisplayedLocation = useLocationStore(
     (state) => state.setDisplayedLocation
@@ -26,6 +27,9 @@ const DeleteBtn = ({ loc, dragOffset }: LocationListBtnProps) => {
       className="bg-red-500 px-6 py-[3.25rem] mt-4 rounded-3xl text-2xl box-border "
       onClick={() => {
         deleteLocation(loc);
+        if (prevLoc !== null) {
+          setDisplayedLocation(prevLoc);
+        }
       }}
     >
       <BsTrash3Fill className="text-white" />

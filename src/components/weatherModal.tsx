@@ -34,7 +34,6 @@ const WeatherModal = ({
     (state) => state.setSavedLocations
   );
   const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
-  console.log(chosen);
   //React-Query
   const { data, isFetching, isSuccess } = useWeatherForSavedLocation(
     chosen as locationSaved

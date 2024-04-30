@@ -1,13 +1,14 @@
-import { locationSaved } from "@/types/locationTypes";
+import { location, locationSaved } from "@/types/locationTypes";
 import SavedLocation from "./savedLocation";
 import { useState } from "react";
 import DeleteBtn from "./delete-btn";
 
 type LocationListBtnProps = {
   loc: locationSaved;
+  prevLoc: locationSaved | location | null;
 };
 
-const LocationListBtn = ({ loc }: LocationListBtnProps) => {
+const LocationListBtn = ({ loc, prevLoc }: LocationListBtnProps) => {
   const [dragOffset, setDragOffset] = useState(0);
 
   return (
@@ -18,7 +19,7 @@ const LocationListBtn = ({ loc }: LocationListBtnProps) => {
         setDragOffset={setDragOffset}
       />
 
-      <DeleteBtn loc={loc} dragOffset={dragOffset} />
+      <DeleteBtn loc={loc} dragOffset={dragOffset} prevLoc={prevLoc} />
     </>
   );
 };

@@ -7,6 +7,7 @@ const LocationList = () => {
   const locations = useLocationStore((state) => state.locations);
   const loading = useLocationStore((state) => state.loading);
   const error = useLocationStore((state) => state.error);
+  const currLoc = useLocationStore((state) => state.currentLocation);
 
   if (loading) return <div>Loading...</div>;
 
@@ -18,7 +19,7 @@ const LocationList = () => {
         </li>
       )}
       <AnimatePresence>
-        {locations.map((loc) => (
+        {locations.map((loc, idx) => (
           <motion.li
             exit={{ opacity: 0, height: 0 }}
             transition={{
@@ -27,7 +28,11 @@ const LocationList = () => {
             className="overflow-hidden p-1 flex w-full space-x-3 "
             key={loc.id}
           >
-            <LocationListBtn loc={loc} />
+            {idx === 0 ? (
+              <LocationListBtn loc={loc} prevLoc={currLoc} />
+            ) : (
+              <LocationListBtn loc={loc} prevLoc={locations[idx - 1]} />
+            )}
           </motion.li>
         ))}
       </AnimatePresence>
