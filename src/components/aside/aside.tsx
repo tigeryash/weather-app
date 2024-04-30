@@ -6,10 +6,11 @@ import { PiSidebarLight } from "react-icons/pi";
 const Aside = () => {
   return (
     <aside
-      className="relative flex flex-col hidden md:block md:w-1/3 xl:w-1/4 bg-neutral-900 bg-opacity-[.8] text-white overflow-hidden"
+      className="relative flex flex-col hidden md:block md:w-1/3 xl:w-1/4 bg-neutral-900 bg-opacity-[.8] text-white overflow-hidden
+      "
       style={{ height: "100vh" }}
     >
-      <div className="absolute p-4 flex items-center justify-between w-full bg-neutral-900 bg-opacity-[.8]">
+      <div className="absolute p-4 flex items-center justify-between w-full bg-transparent backdrop-blur-md z-50">
         <button className="text-4xl font-bold text-left">
           <PiSidebarLight />
         </button>
@@ -17,7 +18,7 @@ const Aside = () => {
           <SlOptions />
         </button>
       </div>
-      <div className="flex-grow overflow-y-scroll pt-14">
+      <div className="h-screen overflow-y-auto pt-14 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
         <Search />
         <LocationList />
       </div>

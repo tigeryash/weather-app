@@ -60,7 +60,7 @@ const Weather = () => {
     return (
       <motion.main
         animate={controls}
-        className="flex flex-col overflow-y-auto items-center w-full text-white md:w-3/4"
+        className="flex flex-col overflow-y-auto items-center w-full text-white md:w-3/4 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-neutral-900/90 "
         style={{ height: "100vh" }}
       >
         <>
