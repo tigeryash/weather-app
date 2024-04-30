@@ -1,5 +1,3 @@
-import { SlOptions } from "react-icons/sl";
-import { PiSidebarLight } from "react-icons/pi";
 import { FaSearch } from "react-icons/fa";
 import { useSearchStore } from "@/stores/search-store";
 
@@ -10,20 +8,9 @@ const Search = () => {
   const isInputFocused = useSearchStore((state) => state.isInputFocused);
   const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       {!isInputFocused && (
         <>
-          <div className="flex items-center justify-between w-full mb-4">
-            <button className="text-4xl font-bold text-left">
-              <PiSidebarLight />
-            </button>
-            <button
-              className="text-xl font-bold text-right border border-2 p-1 border-white rounded-full
-                            "
-            >
-              <SlOptions />
-            </button>
-          </div>
           <h1 className="lg:text-4xl md:text-2xl font-bold text-left mb-2">
             Weather
           </h1>

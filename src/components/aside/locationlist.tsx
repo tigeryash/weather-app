@@ -12,7 +12,7 @@ const LocationList = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <ul className="px-4 py-2 overflow-y-auto">
+    <ul className="px-4 py-2 ">
       {error === null && (
         <li className="p-1">
           <CurrentLocation />
