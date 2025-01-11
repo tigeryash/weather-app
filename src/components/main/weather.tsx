@@ -1,23 +1,25 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { WeatherData, WeatherDataError } from "../../types/weatherTypes";
-import { useWeatherForCurrentLocation } from "@/hooks/useWeatherQueries";
-import { location } from "@/types/locationTypes";
+import { useWeatherForCurrentLocation } from "../../hooks/useWeatherQueries";
+import { location } from "../../types/locationTypes";
 import Visibility from "./visibility";
 import Humidity from "./humidity";
 import Pressure from "./pressure";
 import Sunrise from "./sunrise";
 import Feels from "./feels";
 import Wind from "./wind";
-import { useLocationStore } from "@/stores/location-store";
+import { useLocationStore } from "../../stores/location-store";
 import WeatherLoading from "./weather-loading";
 import { motion, useAnimation } from "framer-motion";
 
 const Weather = () => {
   const displayedLocation = useLocationStore(
-    (state) => state.displayedLocation
+    (state: any) => state.displayedLocation
   );
-  const currentLocation = useLocationStore((state) => state.currentLocation);
+  const currentLocation = useLocationStore(
+    (state: any) => state.currentLocation
+  );
   const { data, isFetching, isSuccess, refetch } = useWeatherForCurrentLocation(
     displayedLocation as location
   );
@@ -44,14 +46,6 @@ const Weather = () => {
       setWeatherData(data as WeatherData);
     }
   }, [data, isSuccess, displayedLocation]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      refetch();
-    }, 1000 * 60 * 10);
-
-    return () => clearTimeout(timer);
-  }, [refetch]);
 
   if (isFetching) return <WeatherLoading />;
 

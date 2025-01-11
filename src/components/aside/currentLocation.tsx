@@ -51,20 +51,20 @@ const CurrentLocation = () => {
           </div>
 
           <p className="lg:text-5xl md:text-4xl">
-            {Math.round(weatherData.main?.temp)}&deg;
+            {Math.round(weatherData?.main?.temp)}&deg;
           </p>
         </div>
         <div className="mt-6 flex justify-between w-full capitalize">
           <span className="md:text-xs lg:text-base">
-            {weatherData.weather[0]?.description}
+            {weatherData?.weather?.[0]?.description}
           </span>
 
           <div className="md:text-xs lg:text-base">
             <span className="mr-2">
-              H:{Math.round(weatherData.main.temp_max)}&deg;
+              H:{Math.round(weatherData?.main?.temp_max)}&deg;
             </span>
             <span className="">
-              L:{Math.round(weatherData.main.temp_min)}&deg;
+              L:{Math.round(weatherData?.main?.temp_min)}&deg;
             </span>
           </div>
         </div>

@@ -25,7 +25,7 @@ export const useSearchStore = create<SearchStoreType>((set) => ({
   setChosen: (chosen) => set({ chosen }),
   handleInputChange: async (e: React.ChangeEvent<HTMLInputElement>) => {
     const response = await axios.get(
-      `https://api.mapbox.com/search/searchbox/v1/suggest?q=${e.target.value}&language=en&poi_category=airport&types=city&session_token=0c2cd92b-8d08-4eb1-88c4-29de688008d6&access_token=pk.eyJ1IjoidGlnZXJ5YXNoIiwiYSI6ImNscHVvYmI5cDBsdWQyanJwZzhuYXNzeDgifQ.rUfOeYvhCPX6wVv4CjgouQ`
+      `https://api.mapbox.com/search/searchbox/v1/suggest?q=${e.target.value}&language=en&poi_category=airport&types=city&session_token=0c2cd92b-8d08-4eb1-88c4-29de688008d6&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`
     );
     const results = response.data.suggestions.map((result: searchType) => {
       return {
