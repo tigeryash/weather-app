@@ -1,29 +1,15 @@
 import { useState } from "react";
-import SectionContainer from "./section-container";
-import SectionHeader from "./section-header";
+import SectionContainer from "@/components/main/section-container";
+import SectionHeader from "@/components/main/section-header";
 import Image from "next/image";
-import SectionBody from "./section-body";
+import SectionBody from "@/components/main/section-body";
+import { PRESSURE_UNITS, PRESSURE_CONVERSIONS } from "@/lib/constants";
 
 const Pressure = ({ pressure }: { pressure: number }) => {
-  const units = ["hPa", "mbar", "inHg", "mmHg", "kPa"];
   const [currentUnit, setCurrentUnit] = useState(0);
 
-  function convertPressure(pressure: number, unit: string): number {
-    switch (unit) {
-      case "hPa":
-        return pressure;
-      case "mbar":
-        return pressure; // hPa and mbar are equivalent
-      case "inHg":
-        return pressure * 0.02953; // 1 hPa = 0.02953 inHg
-      case "mmHg":
-        return pressure * 0.75006; // 1 hPa = 0.75006 mmHg
-      case "kPa":
-        return pressure * 0.1; // 1 hPa = 0.1 kPa
-      default:
-        throw new Error(`Unknown unit: ${unit}`);
-    }
-  }
+  const units = PRESSURE_UNITS;
+  const unit = units[currentUnit];
 
   const handleClick = () => {
     setCurrentUnit((currentUnit + 1) % units.length);
@@ -41,8 +27,8 @@ const Pressure = ({ pressure }: { pressure: number }) => {
         />
       </SectionHeader>
       <SectionBody lorem={false}>
-        {Math.round(convertPressure(pressure, units[currentUnit]))}
-        <span className="text-2xl">{units[currentUnit]}</span>
+        {Math.round(PRESSURE_CONVERSIONS[unit](pressure))}
+        <span className="text-2xl">{unit}</span>
       </SectionBody>
     </SectionContainer>
   );

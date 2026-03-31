@@ -1,12 +1,12 @@
 import { useLocationStore } from "@/stores/location-store";
-import { location, locationSaved } from "@/types/locationTypes";
+import { Location, LocationSaved } from "@/types/locationTypes";
 import { BsTrash3Fill } from "react-icons/bs";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 type LocationListBtnProps = {
-  loc: locationSaved;
+  loc: LocationSaved;
   dragOffset: number;
-  prevLoc: locationSaved | location | null;
+  prevLoc: LocationSaved | Location | null;
 };
 
 const DeleteBtn = ({ loc, dragOffset, prevLoc }: LocationListBtnProps) => {

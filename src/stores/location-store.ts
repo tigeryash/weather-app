@@ -1,21 +1,24 @@
-import { location, locationError, locationSaved } from "@/types/locationTypes";
+import { Location, LocationError, LocationSaved } from "@/types/locationTypes";
 import { create } from "zustand";
-import axios from "axios";
+import {
+  GEOLOCATION_ERROR_MESSAGE,
+  API_BASE_URLS,
+} from "@/lib/constants";
 
 type LocationStoreType = {
-  currentLocation: location | null;
-  setCurrentLocation: (location: location | null) => void;
-  locations: locationSaved[];
+  currentLocation: Location | null;
+  setCurrentLocation: (location: Location | null) => void;
+  locations: LocationSaved[];
   getSavedLocations: () => void;
-  setSavedLocations: (locations: locationSaved[]) => void;
+  setSavedLocations: (locations: LocationSaved[]) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  displayedLocation: location | locationSaved | null;
-  setDisplayedLocation: (location: location | locationSaved | null) => void;
-  error: locationError | null;
+  displayedLocation: Location | LocationSaved | null;
+  setDisplayedLocation: (location: Location | LocationSaved | null) => void;
+  error: LocationError | null;
   onError: () => void;
   getLocation: () => void;
-  deleteLocation: (location: locationSaved) => void;
+  deleteLocation: (location: LocationSaved) => void;
 };
 
 export const useLocationStore = create<LocationStoreType>((set, get) => ({
@@ -41,11 +44,10 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
   setSavedLocations: (locations) => {
     localStorage.setItem("locations", JSON.stringify(locations));
     set({ locations });
-    console.log("locations", locations);
   },
   onError: () => {
     set({
-      error: { loaded: true, code: 0, message: "Geolocation not supported" },
+      error: { loaded: true, code: 0, message: GEOLOCATION_ERROR_MESSAGE },
     });
     set({ loading: false });
   },
@@ -53,27 +55,54 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        const res = await axios.get(
-          `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`
-        );
-        const { components } = res.data.results[0];
-        const temp = {
-          loaded: true,
-          coordinates: { lat: `${latitude}`, lng: `${longitude}` },
-          city: components.city || components.town || components.village,
-          country_code: components["ISO_3166-1_alpha-2"],
-          timestamp: res.data.timestamp.created_http,
-        };
-        set({ currentLocation: temp });
-        set({ displayedLocation: temp });
-        set({ loading: false });
+        try {
+          const res = await fetch(
+            `${API_BASE_URLS.OPENCAGE}?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`
+          );
+          const data = await res.json();
+          if (!data.results || data.results.length === 0) {
+            set({
+              error: {
+                loaded: true,
+                code: 0,
+                message: "No location results found",
+              },
+            });
+            set({ loading: false });
+            return;
+          }
+          const { components } = data.results[0];
+          const temp = {
+            loaded: true,
+            coordinates: { lat: `${latitude}`, lng: `${longitude}` },
+            city:
+              components.city ||
+              components.town ||
+              components.village ||
+              "Unknown",
+            country_code: components["ISO_3166-1_alpha-2"],
+            timestamp: data.timestamp.created_http,
+          };
+          set({ currentLocation: temp });
+          set({ displayedLocation: temp });
+          set({ loading: false });
+        } catch {
+          set({
+            error: {
+              loaded: true,
+              code: 0,
+              message: "Failed to fetch location data",
+            },
+          });
+          set({ loading: false });
+        }
       },
       () => {
         set({
           error: {
             loaded: true,
             code: 0,
-            message: "Geolocation not supported",
+            message: GEOLOCATION_ERROR_MESSAGE,
           },
         });
         set({ loading: false });

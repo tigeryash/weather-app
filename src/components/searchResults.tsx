@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { locationSaved } from "@/types/locationTypes";
+import { LocationSaved } from "@/types/locationTypes";
 import WeatherModal from "./weatherModal";
 import { useSearchStore } from "@/stores/search-store";
 
@@ -30,7 +30,7 @@ const SearchResults = () => {
         {`Results for "${searchTerm}"`}
       </h1>
       <ul>
-        {searchResults.map((result: locationSaved) => {
+        {searchResults.map((result: LocationSaved) => {
           const index = result.city
             .toLowerCase()
             .indexOf(searchTerm.toLowerCase());

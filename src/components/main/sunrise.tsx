@@ -13,14 +13,11 @@ const Sunrise = ({
   set: number;
   timezone: string;
 }) => {
-  const sunriseLocal = new Date(
-    (rise + parseInt(timezone)) * 1000
-  ).toISOString();
-  const sunsetLocal = new Date((set + parseInt(timezone)) * 1000).toISOString();
-  const sunriseLocal1 = new Date((rise + parseInt(timezone)) * 1000);
+  const sunriseLocalDate = new Date((rise + parseInt(timezone)) * 1000);
+  const sunsetLocalDate = new Date((set + parseInt(timezone)) * 1000);
   const currentTime = new Date();
 
-  const isDay = currentTime >= sunriseLocal1 && currentTime <= sunriseLocal1;
+  const isDay = currentTime >= sunriseLocalDate && currentTime <= sunsetLocalDate;
 
   return (
     <SectionContainer>
@@ -35,7 +32,7 @@ const Sunrise = ({
       <div className="h-20 md:h-32">
         <p className="text-2xl sm:3xl md:text-5xl font-light">
           {isDay
-            ? new Date(sunsetLocal)
+            ? sunsetLocalDate
                 .toLocaleTimeString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -43,7 +40,7 @@ const Sunrise = ({
                 })
                 .replace(" AM", "AM")
                 .replace(" PM", "PM")
-            : new Date(sunriseLocal)
+            : sunriseLocalDate
                 .toLocaleTimeString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -56,7 +53,7 @@ const Sunrise = ({
 
       <p className="min-h-[1em] text-xs md:text-base lg:text-lg">
         {!isDay
-          ? `Sunset: ${new Date(sunsetLocal)
+          ? `Sunset: ${sunsetLocalDate
               .toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -64,7 +61,7 @@ const Sunrise = ({
               })
               .replace(" AM", "AM")
               .replace(" PM", "PM")}`
-          : `Sunrise: ${new Date(sunriseLocal)
+          : `Sunrise: ${sunriseLocalDate
               .toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",

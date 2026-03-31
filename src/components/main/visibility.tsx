@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { MdVisibility } from "react-icons/md";
-import SectionContainer from "./section-container";
-import SectionHeader from "./section-header";
-import SectionBody from "./section-body";
+import SectionContainer from "@/components/main/section-container";
+import SectionHeader from "@/components/main/section-header";
+import SectionBody from "@/components/main/section-body";
+import { VISIBILITY_CONVERSIONS } from "@/lib/constants";
 
 const Visibility = ({ visible }: { visible: number }) => {
   const [isMetric, setIsMetric] = useState(true);
@@ -11,9 +12,10 @@ const Visibility = ({ visible }: { visible: number }) => {
     setIsMetric(!isMetric);
   };
 
+  const kmValue = visible / 1000;
   const convert = isMetric
-    ? `${(visible / 1000).toFixed(1)} km`
-    : `${Math.round(visible * 0.000621371)} mi`;
+    ? `${VISIBILITY_CONVERSIONS.km(kmValue).toFixed(1)} km`
+    : `${Math.round(VISIBILITY_CONVERSIONS.miles(kmValue))} mi`;
 
   return (
     <SectionContainer handleClick={handleClick}>

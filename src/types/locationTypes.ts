@@ -1,4 +1,4 @@
-export type location = {
+export type Location = {
   loaded: boolean;
   coordinates: {
     lat: string;
@@ -9,20 +9,20 @@ export type location = {
   timestamp: string;
 };
 
-export type locationError = {
+export type LocationError = {
   loaded: boolean;
   code: number;
   message: string;
 };
 
-export type locationSaved = {
+export type LocationSaved = {
   id: string;
   city: string;
   country: string;
   region?: string;
 };
 
-export type searchType = {
+export type SearchType = {
   mapbox_id: string;
   name: string;
   context: {

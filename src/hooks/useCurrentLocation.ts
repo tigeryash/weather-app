@@ -19,6 +19,7 @@ const useCurrentLocation = () => {
     }
     getLocation();
     getSavedLocations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { currentLocation, loading };

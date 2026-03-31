@@ -1,11 +1,11 @@
-import { location, locationSaved } from "@/types/locationTypes";
+import { Location, LocationSaved } from "@/types/locationTypes";
 import SavedLocation from "./savedLocation";
 import { useState } from "react";
 import DeleteBtn from "./delete-btn";
 
 type LocationListBtnProps = {
-  loc: locationSaved;
-  prevLoc: locationSaved | location | null;
+  loc: LocationSaved;
+  prevLoc: LocationSaved | Location | null;
 };
 
 const LocationListBtn = ({ loc, prevLoc }: LocationListBtnProps) => {

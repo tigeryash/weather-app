@@ -1,11 +1,11 @@
 "use client";
-import Weather from "../components/main/weather";
-import Aside from "../components/aside/aside";
+import Weather from "@/components/main/weather";
+import Aside from "@/components/aside/aside";
 import SearchResults from "@/components/searchResults";
 import { useSearchStore } from "@/stores/search-store";
 import { useLocationStore } from "@/stores/location-store";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
-import Loading from "./loading";
+import Loading from "@/app/loading";
 
 export default function Home() {
   const searchTerm = useSearchStore((state) => state.search);
@@ -29,14 +29,11 @@ export default function Home() {
       ) : (
         <>
           <Aside />
-          {
-            // if the user is searching and the input is focused, display the search results if not display the weather data for selected location
-            searchTerm !== "" && isInputFocused ? (
-              <SearchResults />
-            ) : (
-              displayedLocation !== null && <Weather />
-            )
-          }
+          {searchTerm !== "" && isInputFocused ? (
+            <SearchResults />
+          ) : (
+            displayedLocation !== null && <Weather />
+          )}
         </>
       )}
     </div>
