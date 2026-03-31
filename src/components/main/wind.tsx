@@ -2,8 +2,8 @@ import { useState } from "react";
 import { FaWind } from "react-icons/fa";
 import SectionContainer from "@/components/main/section-container";
 import SectionHeader from "@/components/main/section-header";
-import { motion } from "motion/react";
 import { WIND_SPEED_UNITS, WIND_CONVERSIONS } from "@/lib/constants";
+import WindCompass from "@/components/main/wind-compass";
 
 const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
   const [currentUnit, setCurrentUnit] = useState(0);
@@ -69,36 +69,8 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
             </p>
           </div>
         </div>
-        <div className="relative w-1/3 h-24 md:h-32 md:ml-6 text-center flex items-center justify-center">
-          <motion.div
-            className="absolute w-full h-full rounded-full border-2 border-white/60"
-            style={{ rotate: deg }}
-            animate={{ rotate: deg }}
-            transition={{ type: "spring", stiffness: 60, damping: 20 }}
-          >
-            <motion.div
-              className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-red-500 rounded-full"
-              whileHover={{ scale: 1.2 }}
-            />
-          </motion.div>
-          <div className="absolute w-full h-full rounded-full border border-white/30" />
-          <div className="absolute w-full h-full rounded-full border border-white/20 rotate-45" />
-          <div className="absolute flex items-center justify-center p-2 rounded-full w-12 h-12 md:w-16 md:h-16 text-center text-base md:text-xl bg-white/10 backdrop-blur-sm">
-            {getDirection(deg)}
-          </div>
-          {["N", "E", "S", "W"].map((direction, index) => (
-            <div
-              key={direction}
-              className="absolute text-xs md:text-sm font-semibold"
-              style={{
-                transform: `rotate(${
-                  index * 90
-                }deg) translateY(-40px) rotate(-${index * 90}deg)`,
-              }}
-            >
-              {direction}
-            </div>
-          ))}
+        <div className="flex items-center justify-center md:ml-6">
+          <WindCompass deg={deg} direction={getDirection(deg)} />
         </div>
       </div>
     </SectionContainer>

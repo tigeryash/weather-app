@@ -8,35 +8,41 @@ const LocationList = () => {
   const loading = useLocationStore((state) => state.loading);
   const error = useLocationStore((state) => state.error);
   const currLoc = useLocationStore((state) => state.currentLocation);
+  const totalLocations = locations.length + (currLoc && error === null ? 1 : 0);
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <ul className="px-4 py-2 ">
-      {error === null && (
-        <li className="p-1">
-          <CurrentLocation />
-        </li>
-      )}
-      <AnimatePresence>
-        {locations.map((loc, idx) => (
-          <motion.li
-            exit={{ opacity: 0, height: 0 }}
-            transition={{
-              opacity: { duration: 0 },
-            }}
-            className="overflow-hidden p-1 flex w-full space-x-3 "
-            key={loc.id}
-          >
-            {idx === 0 ? (
-              <LocationListBtn loc={loc} prevLoc={currLoc} />
-            ) : (
-              <LocationListBtn loc={loc} prevLoc={locations[idx - 1]} />
-            )}
-          </motion.li>
-        ))}
-      </AnimatePresence>
-    </ul>
+    <div className="px-4 py-2">
+      <ul>
+        {error === null && (
+          <li className="p-1">
+            <CurrentLocation />
+          </li>
+        )}
+        <AnimatePresence>
+          {locations.map((loc, idx) => (
+            <motion.li
+              exit={{ opacity: 0, height: 0 }}
+              transition={{
+                opacity: { duration: 0 },
+              }}
+              className="overflow-hidden p-1 flex w-full space-x-3 "
+              key={loc.id}
+            >
+              {idx === 0 ? (
+                <LocationListBtn loc={loc} prevLoc={currLoc} />
+              ) : (
+                <LocationListBtn loc={loc} prevLoc={locations[idx - 1]} />
+              )}
+            </motion.li>
+          ))}
+        </AnimatePresence>
+      </ul>
+      <p className="px-2 pt-4 pb-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/45">
+        {totalLocations} location{totalLocations === 1 ? "" : "s"}
+      </p>
+    </div>
   );
 };
 

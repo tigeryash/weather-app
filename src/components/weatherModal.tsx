@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import type { LocationSaved } from "@/types/locationTypes";
 import { useWeatherForSavedLocation } from "@/hooks/useWeatherQueries";
 import type { WeatherData } from "@/types/weatherTypes";
@@ -8,6 +7,10 @@ import { useLocationStore } from "@/stores/location-store";
 import { useSearchStore } from "@/stores/search-store";
 import WeatherHeader from "@/components/shared/weather-header";
 import WeatherDetailGrid from "@/components/shared/weather-detail-grid";
+
+const hasWeather = (
+  data: WeatherData | undefined,
+): data is Extract<WeatherData, { cod: 200 }> => !!data && "weather" in data;
 
 type ModalProps = {
   isOpen: boolean;
@@ -22,6 +25,7 @@ const WeatherModal = ({
   closeModal,
   cancelModal,
 }: ModalProps) => {
+  const chosenLocation = chosen ?? { id: "", city: "", country: "" };
   const setDisplayedLocation = useLocationStore(
     (state) => state.setDisplayedLocation,
   );
@@ -30,35 +34,19 @@ const WeatherModal = ({
     (state) => state.setSavedLocations,
   );
   const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
-  const { data, isFetching, isSuccess } = useWeatherForSavedLocation(
-    chosen as LocationSaved,
-  );
+  const { data, isFetching } = useWeatherForSavedLocation(chosenLocation);
 
-  const [weatherData, setWeatherData] = useState<WeatherData | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    if (isSuccess && data && "weather" in data) {
-      setWeatherData(data);
-    }
-  }, [data, isSuccess]);
+  const weatherData = hasWeather(data) ? data : null;
 
   const addData = () => {
-    const locationsTemp = [...locations, chosen as LocationSaved];
+    const locationsTemp = [...locations, chosenLocation];
     setSavedLocations(locationsTemp);
     closeModal();
     setIsInputFocused(false);
-    setDisplayedLocation(chosen);
+    setDisplayedLocation(chosenLocation);
   };
 
-  if (!isOpen) return null;
-
-  if (isFetching) return <div>Loading...</div>;
-
-  if (!weatherData || !("weather" in weatherData)) {
-    return <div>Weather data is undefined</div>;
-  }
+  if (!isOpen || !chosen) return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center">
@@ -86,10 +74,7 @@ const WeatherModal = ({
               >
                 Cancel
               </button>
-              {!locations.some(
-                (loc) =>
-                  loc.city === chosen?.city && loc.country === chosen?.country,
-              ) && (
+              {!locations.some((loc) => loc.id === chosen?.id) && (
                 <button
                   type="button"
                   className="text-white text-lg"
@@ -99,25 +84,37 @@ const WeatherModal = ({
                 </button>
               )}
             </div>
-            <div>
-              {chosen !== null && "city" in chosen ? (
-                <WeatherHeader
-                  cityName={chosen.city}
-                  temp={Math.round(weatherData.main.temp)}
-                  description={weatherData.weather[0]?.description || ""}
-                  tempMax={Math.round(weatherData.main.temp_max)}
-                  tempMin={Math.round(weatherData.main.temp_min)}
-                  variant="modal"
-                />
-              ) : (
-                <p className="text-black text-lg font-semibold">MyLocation</p>
-              )}
-            </div>
+            {isFetching && !weatherData ? (
+              <p className="text-white text-center mt-8">Loading...</p>
+            ) : !weatherData ? (
+              <p className="text-white text-center mt-8">
+                Unable to load weather data
+              </p>
+            ) : (
+              <>
+                <div>
+                  {chosen !== null && "city" in chosen ? (
+                    <WeatherHeader
+                      cityName={chosen.city}
+                      temp={Math.round(weatherData.main.temp)}
+                      description={weatherData.weather[0]?.description || ""}
+                      tempMax={Math.round(weatherData.main.temp_max)}
+                      tempMin={Math.round(weatherData.main.temp_min)}
+                      variant="modal"
+                    />
+                  ) : (
+                    <p className="text-black text-lg font-semibold">
+                      MyLocation
+                    </p>
+                  )}
+                </div>
 
-            <WeatherDetailGrid
-              data={weatherData}
-              className="grid grid-cols-2 gap-2 md:gap-6 w-full px-20"
-            />
+                <WeatherDetailGrid
+                  data={weatherData}
+                  className="grid grid-cols-2 gap-2 md:gap-6 w-full px-20"
+                />
+              </>
+            )}
           </motion.section>
         )}
       </AnimatePresence>

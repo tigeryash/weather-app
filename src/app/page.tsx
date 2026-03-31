@@ -6,6 +6,8 @@ import { useSearchStore } from "@/stores/search-store";
 import { useLocationStore } from "@/stores/location-store";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
 import Loading from "@/app/loading";
+import { useState, useCallback } from "react";
+import { PiSidebarLight } from "react-icons/pi";
 
 export default function Home() {
   const searchTerm = useSearchStore((state) => state.search);
@@ -14,6 +16,9 @@ export default function Home() {
     (state) => state.displayedLocation,
   );
   const { loading } = useCurrentLocation();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const closeDrawer = useCallback(() => setIsDrawerOpen(false), []);
+
   return (
     <div
       style={{
@@ -28,7 +33,21 @@ export default function Home() {
         <Loading />
       ) : (
         <>
-          <Aside />
+          <button
+            type="button"
+            data-menu-trigger="true"
+            className="fixed top-3 left-3 z-40 text-white text-3xl md:hidden drop-shadow-lg"
+            onTouchStart={(event) => {
+              event.stopPropagation();
+            }}
+            onTouchEnd={(event) => {
+              event.stopPropagation();
+            }}
+            onClick={() => setIsDrawerOpen(true)}
+          >
+            <PiSidebarLight />
+          </button>
+          <Aside isDrawerOpen={isDrawerOpen} closeDrawer={closeDrawer} />
           {searchTerm !== "" && isInputFocused ? (
             <SearchResults />
           ) : (

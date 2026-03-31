@@ -4,7 +4,24 @@ import type {
   LocationSaved,
 } from "@/types/locationTypes";
 import { create } from "zustand";
-import { GEOLOCATION_ERROR_MESSAGE, API_BASE_URLS } from "@/lib/constants";
+import {
+  loadSavedLocations,
+  saveLocations,
+  fetchCurrentLocation,
+} from "@/services/location-service";
+import { GEOLOCATION_ERROR_MESSAGE } from "@/lib/constants";
+
+type NavigableLocation = Location | LocationSaved;
+
+const isSameLocation = (
+  a: Location | LocationSaved | null,
+  b: Location | LocationSaved | null,
+) => {
+  if (!a || !b) return false;
+  if ("timestamp" in a && "timestamp" in b) return a.timestamp === b.timestamp;
+  if ("id" in a && "id" in b) return a.id === b.id;
+  return false;
+};
 
 type LocationStoreType = {
   currentLocation: Location | null;
@@ -15,20 +32,43 @@ type LocationStoreType = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   displayedLocation: Location | LocationSaved | null;
+  pendingLocation: Location | LocationSaved | null;
   setDisplayedLocation: (location: Location | LocationSaved | null) => void;
+  commitDisplayedLocation: () => void;
   error: LocationError | null;
   onError: () => void;
   getLocation: () => void;
   deleteLocation: (location: LocationSaved) => void;
+  getNavigableLocations: () => NavigableLocation[];
+  navigateToNext: () => void;
+  navigateToPrev: () => void;
 };
 
 export const useLocationStore = create<LocationStoreType>((set, get) => ({
   locations: [],
   loading: true,
   displayedLocation: null,
+  pendingLocation: null,
   currentLocation: null,
   error: null,
-  setDisplayedLocation: (displayedLocation) => set({ displayedLocation }),
+  setDisplayedLocation: (location) => {
+    const { displayedLocation, pendingLocation } = get();
+
+    if (
+      isSameLocation(location, displayedLocation) ||
+      isSameLocation(location, pendingLocation)
+    ) {
+      return;
+    }
+
+    set({ pendingLocation: location });
+  },
+  commitDisplayedLocation: () => {
+    const pending = get().pendingLocation;
+    if (pending) {
+      set({ displayedLocation: pending, pendingLocation: null });
+    }
+  },
   setLoading: (loading) => set({ loading }),
   setCurrentLocation: (currentLocation) => set({ currentLocation }),
   deleteLocation: (location) => {
@@ -37,13 +77,10 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
     get().setSavedLocations(locations);
   },
   getSavedLocations: () => {
-    const savedLocations = localStorage.getItem("locations");
-    if (savedLocations) {
-      set({ locations: JSON.parse(savedLocations) });
-    }
+    set({ locations: loadSavedLocations() });
   },
   setSavedLocations: (locations) => {
-    localStorage.setItem("locations", JSON.stringify(locations));
+    saveLocations(locations);
     set({ locations });
   },
   onError: () => {
@@ -53,61 +90,54 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
     set({ loading: false });
   },
   getLocation: () => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const res = await fetch(
-            `${API_BASE_URLS.OPENCAGE}?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`,
-          );
-          const data = await res.json();
-          if (!data.results || data.results.length === 0) {
-            set({
-              error: {
-                loaded: true,
-                code: 0,
-                message: "No location results found",
-              },
-            });
-            set({ loading: false });
-            return;
-          }
-          const { components } = data.results[0];
-          const temp = {
-            loaded: true,
-            coordinates: { lat: `${latitude}`, lng: `${longitude}` },
-            city:
-              components.city ||
-              components.town ||
-              components.village ||
-              "Unknown",
-            country_code: components["ISO_3166-1_alpha-2"],
-            timestamp: data.timestamp.created_http,
-          };
-          set({ currentLocation: temp });
-          set({ displayedLocation: temp });
-          set({ loading: false });
-        } catch {
-          set({
-            error: {
-              loaded: true,
-              code: 0,
-              message: "Failed to fetch location data",
-            },
-          });
-          set({ loading: false });
-        }
-      },
-      () => {
-        set({
-          error: {
-            loaded: true,
-            code: 0,
-            message: GEOLOCATION_ERROR_MESSAGE,
-          },
-        });
+    fetchCurrentLocation()
+      .then((location) => {
+        set({ currentLocation: location });
+        set({ displayedLocation: location });
         set({ loading: false });
-      },
-    );
+      })
+      .catch((error: LocationError) => {
+        set({ error });
+        set({ loading: false });
+      });
+  },
+  getNavigableLocations: () => {
+    const { currentLocation, locations } = get();
+    const result: NavigableLocation[] = [];
+    if (currentLocation) result.push(currentLocation);
+    result.push(...locations);
+    return result;
+  },
+  navigateToNext: () => {
+    const navList = get().getNavigableLocations();
+    if (navList.length <= 1) return;
+    const displayed = get().displayedLocation;
+    const idx = displayed
+      ? navList.findIndex((loc) => {
+          if ("timestamp" in loc && "timestamp" in displayed)
+            return loc.timestamp === displayed.timestamp;
+          if ("id" in loc && "id" in displayed) return loc.id === displayed.id;
+          return false;
+        })
+      : -1;
+    if (idx >= navList.length - 1) return;
+    const nextIdx = idx < 0 ? 0 : idx + 1;
+    get().setDisplayedLocation(navList[nextIdx]);
+  },
+  navigateToPrev: () => {
+    const navList = get().getNavigableLocations();
+    if (navList.length <= 1) return;
+    const displayed = get().displayedLocation;
+    const idx = displayed
+      ? navList.findIndex((loc) => {
+          if ("timestamp" in loc && "timestamp" in displayed)
+            return loc.timestamp === displayed.timestamp;
+          if ("id" in loc && "id" in displayed) return loc.id === displayed.id;
+          return false;
+        })
+      : -1;
+    if (idx <= 0) return;
+    const prevIdx = idx - 1;
+    get().setDisplayedLocation(navList[prevIdx]);
   },
 }));

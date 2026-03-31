@@ -29,6 +29,9 @@ const SearchResults = () => {
         {`Results for "${searchTerm}"`}
       </h1>
       {isLoading && <p className="text-white text-lg">Loading...</p>}
+      {searchResults.length === 0 && !isLoading && (
+        <p className="text-white text-lg">No results found</p>
+      )}
       <ul>
         {searchResults.map((result: LocationSaved) => {
           const index = result.city

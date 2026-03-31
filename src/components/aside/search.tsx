@@ -3,7 +3,11 @@ import { useSearchStore } from "@/stores/search-store";
 import { PiSidebarLight } from "react-icons/pi";
 import { SlOptions } from "react-icons/sl";
 
-const Search = () => {
+interface SearchProps {
+  closeDrawer?: () => void;
+}
+
+const Search = ({ closeDrawer }: SearchProps) => {
   const searchTerm = useSearchStore((state) => state.search);
   const setSearchTerm = useSearchStore((state) => state.setSearch);
   const handleInputChange = useSearchStore((state) => state.handleInputChange);
@@ -12,7 +16,11 @@ const Search = () => {
   return (
     <>
       <div className="absolute p-4 top-0 flex items-center justify-between w-full bg-transparent backdrop-blur-md z-50">
-        <button type="button" className="text-4xl font-bold text-left">
+        <button
+          type="button"
+          className="text-4xl font-bold text-left"
+          onClick={closeDrawer}
+        >
           <PiSidebarLight />
         </button>
         <button

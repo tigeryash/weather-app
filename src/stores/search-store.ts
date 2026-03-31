@@ -1,6 +1,9 @@
-import type { LocationSaved, SearchType } from "@/types/locationTypes";
+import type { LocationSaved } from "@/types/locationTypes";
 import { create } from "zustand";
-import { API_BASE_URLS } from "@/lib/constants";
+import {
+  fetchSuggestions,
+  retrieveCoordinates,
+} from "@/services/search-service";
 
 type SearchStoreType = {
   search: string;
@@ -12,6 +15,7 @@ type SearchStoreType = {
   chosen: LocationSaved | null;
   setChosen: (chosen: LocationSaved | null) => void;
   sessionToken: string;
+  debounceTimer: number | null;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   retrieveLocation: (
     mapboxId: string,
@@ -25,57 +29,39 @@ export const useSearchStore = create<SearchStoreType>((set, get) => ({
   isInputFocused: false,
   chosen: null,
   sessionToken: crypto.randomUUID(),
+  debounceTimer: null,
   setSearch: (search) => set({ search }),
   setSearchResults: (searchResults) => set({ searchResults }),
   setIsInputFocused: (isInputFocused) => {
+    const { debounceTimer } = get();
+    if (debounceTimer !== null) clearTimeout(debounceTimer);
     set({ isInputFocused });
     if (!isInputFocused) {
-      set({ search: "", searchResults: [], sessionToken: crypto.randomUUID() });
+      set({
+        search: "",
+        searchResults: [],
+        sessionToken: crypto.randomUUID(),
+        debounceTimer: null,
+      });
     }
   },
   setChosen: (chosen) => set({ chosen }),
-  handleInputChange: async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { sessionToken } = get();
-    try {
-      const response = await fetch(
-        `${API_BASE_URLS.MAPBOX}?q=${e.target.value}&language=en&poi_category=airport&types=city&session_token=${sessionToken}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`,
-      );
-      const data = await response.json();
-      if (!data.suggestions) {
-        set({ searchResults: [] });
-        return;
-      }
-      const results = data.suggestions.map((result: SearchType) => ({
-        id: result.mapbox_id,
-        city: result.name,
-        country: result.context.country.name,
-        region: result.context.region?.name,
-      }));
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { debounceTimer, sessionToken } = get();
+    if (debounceTimer !== null) clearTimeout(debounceTimer);
+    const query = e.target.value;
+    set({ search: query });
+    const timer = setTimeout(async () => {
+      const results = await fetchSuggestions(query, sessionToken);
       set({ searchResults: results });
-    } catch {
-      set({ searchResults: [] });
-    }
+    }, 300);
+    set({ debounceTimer: timer as unknown as number });
   },
   retrieveLocation: async (
     mapboxId: string,
   ): Promise<{ lat: string; lng: string } | null> => {
     const { sessionToken } = get();
-    try {
-      const response = await fetch(
-        `${API_BASE_URLS.MAPBOX_RETRIEVE}/${mapboxId}?session_token=${sessionToken}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`,
-      );
-      const data = await response.json();
-      if (!data.features || data.features.length === 0) return null;
-
-      const feature = data.features[0];
-      const [lng, lat] = feature.geometry.coordinates;
-      return {
-        lat: String(lat),
-        lng: String(lng),
-      };
-    } catch {
-      return null;
-    }
+    return retrieveCoordinates(mapboxId, sessionToken);
   },
   selectResult: async (result: LocationSaved) => {
     const coords = await get().retrieveLocation(result.id);

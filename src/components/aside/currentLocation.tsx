@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import { FiMapPin } from "react-icons/fi";
 import type { Location } from "@/types/locationTypes";
 import { useWeatherForCurrentLocation } from "@/hooks/useWeatherQueries";
 import { useLocationStore } from "@/stores/location-store";
