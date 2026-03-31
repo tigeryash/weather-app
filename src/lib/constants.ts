@@ -38,7 +38,7 @@ export const GEOLOCATION_ERROR_MESSAGE = "Geolocation not supported";
 
 export const API_BASE_URLS = {
   OPENCAGE: "https://api.opencagedata.com/geocode/v1/json",
-  OPENWEATHERMAP: "https://api.openweathermap.org/data/3.0/onecall",
+  OPENWEATHERMAP: "https://api.openweathermap.org/data/2.5/weather",
   MAPBOX: "https://api.mapbox.com/search/searchbox/v1/suggest",
   MAPBOX_RETRIEVE:"https://api.mapbox.com/search/searchbox/v1/retrieve"
 } as const;

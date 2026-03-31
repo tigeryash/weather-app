@@ -7,8 +7,13 @@ import { WEATHER_CONFIG } from "../lib/constants";
 export const useWeatherForSavedLocation = (loc: LocationSaved) => {
   const { data, isLoading, isSuccess, isFetching } = useQuery<WeatherData>({
     queryKey: ["weather", JSON.stringify(loc)],
-    queryFn: () => getWeather(loc.city, loc.country),
-    enabled: loc.city !== "",
+    queryFn: () => {
+      if (loc.lat && loc.lng) {
+        return getWeather(loc.lat, loc.lng);
+      }
+      return Promise.resolve({ cod: 0, message: "Missing coordinates" } as WeatherData);
+    },
+    enabled: !!loc.lat && !!loc.lng,
     staleTime: WEATHER_CONFIG.STALE_TIME,
     refetchInterval: WEATHER_CONFIG.REFRESH_INTERVAL,
   });
@@ -18,8 +23,25 @@ export const useWeatherForSavedLocation = (loc: LocationSaved) => {
 export const useWeatherForCurrentLocation = (loc: Location) => {
   const { data, isLoading, isSuccess, isFetching, refetch } =
     useQuery<WeatherData>({
-      queryKey: ["currentWeather", loc?.city, loc?.country_code],
-      queryFn: () => getWeather(loc.city, loc.country_code),
+      queryKey: ["currentWeather", loc?.coordinates?.lat, loc?.coordinates?.lng],
+      queryFn: () => getWeather(loc.coordinates.lat, loc.coordinates.lng),
+      enabled: !!loc?.coordinates?.lat && !!loc?.coordinates?.lng,
+      staleTime: WEATHER_CONFIG.STALE_TIME,
+      refetchInterval: WEATHER_CONFIG.REFRESH_INTERVAL,
+    });
+
+  return { data, isLoading, isSuccess, isFetching, refetch };
+};
+
+export const useWeather = (loc: Location | LocationSaved | null) => {
+  const lat = loc && "coordinates" in loc ? loc.coordinates.lat : (loc as LocationSaved | null)?.lat;
+  const lon = loc && "coordinates" in loc ? loc.coordinates.lng : (loc as LocationSaved | null)?.lng;
+
+  const { data, isLoading, isSuccess, isFetching, refetch } =
+    useQuery<WeatherData>({
+      queryKey: ["weather", lat, lon],
+      queryFn: () => getWeather(lat!, lon!),
+      enabled: !!lat && !!lon,
       staleTime: WEATHER_CONFIG.STALE_TIME,
       refetchInterval: WEATHER_CONFIG.REFRESH_INTERVAL,
     });

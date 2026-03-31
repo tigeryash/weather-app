@@ -20,6 +20,8 @@ export type LocationSaved = {
   city: string;
   country: string;
   region?: string;
+  lat?: string;
+  lng?: string;
 };
 
 export type SearchType = {

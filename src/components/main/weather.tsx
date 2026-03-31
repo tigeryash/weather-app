@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { WeatherData } from "@/types/weatherTypes";
-import { useWeatherForCurrentLocation } from "@/hooks/useWeatherQueries";
+import { useWeather } from "@/hooks/useWeatherQueries";
 import { Location, LocationSaved } from "@/types/locationTypes";
 import { useLocationStore } from "@/stores/location-store";
 import WeatherLoading from "@/components/main/weather-loading";
@@ -16,9 +16,7 @@ const Weather = () => {
   const currentLocation = useLocationStore(
     (state) => state.currentLocation
   ) as Location | null;
-  const { data, isFetching, isSuccess } = useWeatherForCurrentLocation(
-    displayedLocation as Location
-  );
+  const { data, isFetching, isSuccess } = useWeather(displayedLocation);
   const [weatherData, setWeatherData] = useState<WeatherData | undefined>(
     undefined
   );
