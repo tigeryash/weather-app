@@ -1,15 +1,15 @@
 "use server";
 
-import { WeatherData } from "@/types/weatherTypes";
+import type { WeatherData } from "@/types/weatherTypes";
 import { API_BASE_URLS } from "@/lib/constants";
 
 export async function getWeather(
   lat: string,
-  lon: string
+  lon: string,
 ): Promise<WeatherData> {
   const response = await fetch(
     `${API_BASE_URLS.OPENWEATHERMAP}?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`,
-    { cache: "no-store" }
+    { cache: "no-store" },
   );
 
   if (!response.ok) {

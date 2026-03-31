@@ -1,4 +1,4 @@
-import { WeatherData } from "@/types/weatherTypes";
+import type { WeatherData } from "@/types/weatherTypes";
 import Wind from "@/components/main/wind";
 import Feels from "@/components/main/feels";
 import Sunrise from "@/components/main/sunrise";

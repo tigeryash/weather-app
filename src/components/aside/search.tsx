@@ -12,21 +12,22 @@ const Search = () => {
   return (
     <>
       <div className="absolute p-4 top-0 flex items-center justify-between w-full bg-transparent backdrop-blur-md z-50">
-        <button className="text-4xl font-bold text-left">
+        <button type="button" className="text-4xl font-bold text-left">
           <PiSidebarLight />
         </button>
-        <button className="text-xl font-bold text-right border-2 p-1 border-white rounded-full">
+        <button
+          type="button"
+          className="text-xl font-bold text-right border-2 p-1 border-white rounded-full"
+        >
           <SlOptions />
         </button>
       </div>
 
       <div className="p-4 ">
         {!isInputFocused && (
-          <>
-            <h1 className="lg:text-4xl md:text-2xl font-bold text-left mb-2">
-              Weather
-            </h1>
-          </>
+          <h1 className="lg:text-4xl md:text-2xl font-bold text-left mb-2">
+            Weather
+          </h1>
         )}
         <div className="relative text-neutral-400 flex gap-2">
           <input
@@ -44,6 +45,7 @@ const Search = () => {
           <FaSearch className="absolute text-lg top-1/2 left-2 transform -translate-y-1/2" />
           {isInputFocused && (
             <button
+              type="button"
               className="text-neutral-200 text-lg hover:bg-neutral-500 hover:rounded-lg px-2"
               onClick={() => {
                 setIsInputFocused(false);

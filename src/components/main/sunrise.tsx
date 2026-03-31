@@ -1,4 +1,3 @@
-import React from "react";
 import { FiSunset } from "react-icons/fi";
 import { FiSunrise } from "react-icons/fi";
 import SectionContainer from "./section-container";
@@ -13,11 +12,12 @@ const Sunrise = ({
   set: number;
   timezone: string;
 }) => {
-  const sunriseLocalDate = new Date((rise + parseInt(timezone)) * 1000);
-  const sunsetLocalDate = new Date((set + parseInt(timezone)) * 1000);
+  const sunriseLocalDate = new Date((rise + parseInt(timezone, 10)) * 1000);
+  const sunsetLocalDate = new Date((set + parseInt(timezone, 10)) * 1000);
   const currentTime = new Date();
 
-  const isDay = currentTime >= sunriseLocalDate && currentTime <= sunsetLocalDate;
+  const isDay =
+    currentTime >= sunriseLocalDate && currentTime <= sunsetLocalDate;
 
   return (
     <SectionContainer>

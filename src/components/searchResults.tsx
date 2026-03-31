@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { LocationSaved } from "@/types/locationTypes";
+import type { LocationSaved } from "@/types/locationTypes";
 import WeatherModal from "./weatherModal";
 import { useSearchStore } from "@/stores/search-store";
 
@@ -38,19 +38,21 @@ const SearchResults = () => {
           const match = result.city.slice(index, index + searchTerm.length);
           const after = result.city.slice(index + searchTerm.length);
           return (
-            <li
-              className=" py-3 text-[#9d9ea7] font-bold text-2xl"
-              key={result.id}
-              onClick={async () => {
-                setIsLoading(true);
-                await selectResult(result);
-                setIsLoading(false);
-                openModal();
-              }}
-            >
-              {before}
-              <span className="text-white">{match}</span>
-              {after} {result.region} {result.country}
+            <li key={result.id}>
+              <button
+                type="button"
+                className="w-full py-3 text-left text-2xl font-bold text-[#9d9ea7]"
+                onClick={async () => {
+                  setIsLoading(true);
+                  await selectResult(result);
+                  setIsLoading(false);
+                  openModal();
+                }}
+              >
+                {before}
+                <span className="text-white">{match}</span>
+                {after} {result.region} {result.country}
+              </button>
             </li>
           );
         })}

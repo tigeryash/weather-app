@@ -1,4 +1,4 @@
-import { LocationSaved, SearchType } from "@/types/locationTypes";
+import type { LocationSaved, SearchType } from "@/types/locationTypes";
 import { create } from "zustand";
 import { API_BASE_URLS } from "@/lib/constants";
 
@@ -13,7 +13,9 @@ type SearchStoreType = {
   setChosen: (chosen: LocationSaved | null) => void;
   sessionToken: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  retrieveLocation: (mapboxId: string) => Promise<{ lat: string; lng: string } | null>;
+  retrieveLocation: (
+    mapboxId: string,
+  ) => Promise<{ lat: string; lng: string } | null>;
   selectResult: (result: LocationSaved) => Promise<LocationSaved | null>;
 };
 
@@ -36,7 +38,7 @@ export const useSearchStore = create<SearchStoreType>((set, get) => ({
     const { sessionToken } = get();
     try {
       const response = await fetch(
-        `${API_BASE_URLS.MAPBOX}?q=${e.target.value}&language=en&poi_category=airport&types=city&session_token=${sessionToken}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`
+        `${API_BASE_URLS.MAPBOX}?q=${e.target.value}&language=en&poi_category=airport&types=city&session_token=${sessionToken}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`,
       );
       const data = await response.json();
       if (!data.suggestions) {
@@ -54,11 +56,13 @@ export const useSearchStore = create<SearchStoreType>((set, get) => ({
       set({ searchResults: [] });
     }
   },
-  retrieveLocation: async (mapboxId: string): Promise<{ lat: string; lng: string } | null> => {
+  retrieveLocation: async (
+    mapboxId: string,
+  ): Promise<{ lat: string; lng: string } | null> => {
     const { sessionToken } = get();
     try {
       const response = await fetch(
-        `${API_BASE_URLS.MAPBOX_RETRIEVE}/${mapboxId}?session_token=${sessionToken}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`
+        `${API_BASE_URLS.MAPBOX_RETRIEVE}/${mapboxId}?session_token=${sessionToken}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`,
       );
       const data = await response.json();
       if (!data.features || data.features.length === 0) return null;

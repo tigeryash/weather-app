@@ -15,8 +15,22 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
 
   const getDirection = (deg: number) => {
     const directions = [
-      "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-      "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW",
+      "N",
+      "NNE",
+      "NE",
+      "ENE",
+      "E",
+      "ESE",
+      "SE",
+      "SSE",
+      "S",
+      "SSW",
+      "SW",
+      "WSW",
+      "W",
+      "WNW",
+      "NW",
+      "NNW",
     ];
     return directions[Math.round(deg / 22.5) % 16];
   };
@@ -41,9 +55,7 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
             </p>
 
             <p className="flex flex-col justify-center">
-              <span className="md:text-base text-xs uppercase">
-                {unit}
-              </span>
+              <span className="md:text-base text-xs uppercase">{unit}</span>
               <span className="md:text-base text-xs capitalize">wind</span>
             </p>
           </div>
@@ -52,9 +64,7 @@ const Wind = ({ deg, speed }: { deg: number; speed: number }) => {
             <p className="text-3xl md:text-5xl font-light mr-2">XX</p>
 
             <p className="flex flex-col justify-center">
-              <span className="md:text-base text-xs uppercase">
-                {unit}
-              </span>
+              <span className="md:text-base text-xs uppercase">{unit}</span>
               <span className="md:text-base text-xs capitalize">gusts</span>
             </p>
           </div>

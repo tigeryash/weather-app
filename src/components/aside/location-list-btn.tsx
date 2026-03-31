@@ -1,4 +1,4 @@
-import { Location, LocationSaved } from "@/types/locationTypes";
+import type { Location, LocationSaved } from "@/types/locationTypes";
 import SavedLocation from "./savedLocation";
 import { useState } from "react";
 import DeleteBtn from "./delete-btn";

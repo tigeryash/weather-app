@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { WeatherData } from "@/types/weatherTypes";
+import { useEffect, useState } from "react";
+import type { WeatherData } from "@/types/weatherTypes";
 import { useWeather } from "@/hooks/useWeatherQueries";
-import { Location, LocationSaved } from "@/types/locationTypes";
+import type { Location, LocationSaved } from "@/types/locationTypes";
 import { useLocationStore } from "@/stores/location-store";
 import WeatherLoading from "@/components/main/weather-loading";
 import { motion, useAnimation } from "motion/react";
@@ -11,19 +11,21 @@ import WeatherDetailGrid from "@/components/shared/weather-detail-grid";
 
 const Weather = () => {
   const displayedLocation = useLocationStore(
-    (state) => state.displayedLocation
+    (state) => state.displayedLocation,
   ) as Location | LocationSaved | null;
   const currentLocation = useLocationStore(
-    (state) => state.currentLocation
+    (state) => state.currentLocation,
   ) as Location | null;
   const { data, isFetching, isSuccess } = useWeather(displayedLocation);
   const [weatherData, setWeatherData] = useState<WeatherData | undefined>(
-    undefined
+    undefined,
   );
 
   const controls = useAnimation();
 
   useEffect(() => {
+    void displayedLocation;
+
     const sequence = async () => {
       await controls.start({ opacity: 0, scale: 0.95 });
       await controls.start({
@@ -39,7 +41,7 @@ const Weather = () => {
     if (isSuccess && data && "weather" in data) {
       setWeatherData(data);
     }
-  }, [data, isSuccess, displayedLocation]);
+  }, [data, isSuccess]);
 
   if (isFetching) return <WeatherLoading />;
 

@@ -11,7 +11,9 @@ export const WIND_CONVERSIONS = {
   mph: (speed: number) => speed * 2.237,
   knots: (speed: number) => speed * 1.944,
   bft: (speed: number) => {
-    const thresholds = [0.5, 1.5, 3.3, 5.5, 7.9, 10.7, 13.8, 17.1, 20.7, 24.4, 28.4, 32.6];
+    const thresholds = [
+      0.5, 1.5, 3.3, 5.5, 7.9, 10.7, 13.8, 17.1, 20.7, 24.4, 28.4, 32.6,
+    ];
     for (let i = 0; i < thresholds.length; i++) {
       if (speed < thresholds[i]) return i;
     }
@@ -40,5 +42,5 @@ export const API_BASE_URLS = {
   OPENCAGE: "https://api.opencagedata.com/geocode/v1/json",
   OPENWEATHERMAP: "https://api.openweathermap.org/data/2.5/weather",
   MAPBOX: "https://api.mapbox.com/search/searchbox/v1/suggest",
-  MAPBOX_RETRIEVE:"https://api.mapbox.com/search/searchbox/v1/retrieve"
+  MAPBOX_RETRIEVE: "https://api.mapbox.com/search/searchbox/v1/retrieve",
 } as const;

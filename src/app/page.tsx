@@ -11,7 +11,7 @@ export default function Home() {
   const searchTerm = useSearchStore((state) => state.search);
   const isInputFocused = useSearchStore((state) => state.isInputFocused);
   const displayedLocation = useLocationStore(
-    (state) => state.displayedLocation
+    (state) => state.displayedLocation,
   );
   const { loading } = useCurrentLocation();
   return (

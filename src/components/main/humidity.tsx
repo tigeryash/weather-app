@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import SectionContainer from "./section-container";
 import SectionHeader from "./section-header";

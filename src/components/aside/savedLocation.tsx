@@ -1,7 +1,6 @@
 "use client";
-import { LocationSaved } from "@/types/locationTypes";
+import type { LocationSaved } from "@/types/locationTypes";
 import { useWeatherForSavedLocation } from "@/hooks/useWeatherQueries";
-import { WeatherData } from "@/types/weatherTypes";
 import { useLocationStore } from "@/stores/location-store";
 import { motion } from "motion/react";
 import { useSearchStore } from "@/stores/search-store";
@@ -16,10 +15,10 @@ type LocationProps = {
 const SavedLocation = ({ loc, setDragOffset, dragOffset }: LocationProps) => {
   const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
   const displayedLocation = useLocationStore(
-    (state) => state.displayedLocation
+    (state) => state.displayedLocation,
   );
   const setDisplayedLocation = useLocationStore(
-    (state) => state.setDisplayedLocation
+    (state) => state.setDisplayedLocation,
   );
   const weatherQuery = useWeatherForSavedLocation(loc as LocationSaved);
 
@@ -35,7 +34,7 @@ const SavedLocation = ({ loc, setDragOffset, dragOffset }: LocationProps) => {
       drag="x"
       dragMomentum={false}
       dragConstraints={{ left: 0, right: 0 }}
-      onDrag={(event, info) => {
+      onDrag={(_event, info) => {
         setDragOffset(info.offset.x);
       }}
       dragElastic={{

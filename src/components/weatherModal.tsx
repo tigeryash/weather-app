@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { LocationSaved } from "@/types/locationTypes";
+import type { LocationSaved } from "@/types/locationTypes";
 import { useWeatherForSavedLocation } from "@/hooks/useWeatherQueries";
-import { WeatherData } from "@/types/weatherTypes";
+import type { WeatherData } from "@/types/weatherTypes";
 import { AnimatePresence, motion } from "motion/react";
 import { useLocationStore } from "@/stores/location-store";
 import { useSearchStore } from "@/stores/search-store";
@@ -23,19 +23,19 @@ const WeatherModal = ({
   cancelModal,
 }: ModalProps) => {
   const setDisplayedLocation = useLocationStore(
-    (state) => state.setDisplayedLocation
+    (state) => state.setDisplayedLocation,
   );
   const locations = useLocationStore((state) => state.locations);
   const setSavedLocations = useLocationStore(
-    (state) => state.setSavedLocations
+    (state) => state.setSavedLocations,
   );
   const setIsInputFocused = useSearchStore((state) => state.setIsInputFocused);
   const { data, isFetching, isSuccess } = useWeatherForSavedLocation(
-    chosen as LocationSaved
+    chosen as LocationSaved,
   );
 
   const [weatherData, setWeatherData] = useState<WeatherData | undefined>(
-    undefined
+    undefined,
   );
 
   useEffect(() => {
@@ -61,17 +61,17 @@ const WeatherModal = ({
   }
 
   return (
-    <div
-      className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center"
-      onClick={(e) => {
-        e.stopPropagation();
-        cancelModal();
-      }}
-    >
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+      <button
+        type="button"
+        aria-label="Close weather modal"
+        className="absolute inset-0 bg-black bg-opacity-50"
+        onClick={cancelModal}
+      />
       <AnimatePresence>
         {isOpen && (
           <motion.section
-            className="flex flex-col justify-start text-white w-2/4 overflow-y-auto bg-black rounded-2xl p-4 box-border"
+            className="relative z-10 flex w-2/4 flex-col justify-start overflow-y-auto rounded-2xl bg-black p-4 text-white box-border"
             style={{ maxHeight: "80vh" }}
             initial={{ y: "100vh" }}
             animate={{ y: 0 }}
@@ -79,15 +79,22 @@ const WeatherModal = ({
             transition={{ ease: "easeInOut", duration: 0.4 }}
           >
             <div className="flex justify-between">
-              <button className="text-white text-lg" onClick={cancelModal}>
+              <button
+                type="button"
+                className="text-white text-lg"
+                onClick={cancelModal}
+              >
                 Cancel
               </button>
               {!locations.some(
                 (loc) =>
-                  loc.city === chosen?.city &&
-                  loc.country === chosen?.country
+                  loc.city === chosen?.city && loc.country === chosen?.country,
               ) && (
-                <button className="text-white text-lg" onClick={addData}>
+                <button
+                  type="button"
+                  className="text-white text-lg"
+                  onClick={addData}
+                >
                   Add
                 </button>
               )}
@@ -103,9 +110,7 @@ const WeatherModal = ({
                   variant="modal"
                 />
               ) : (
-                <p className="text-black text-lg font-semibold">
-                  MyLocation
-                </p>
+                <p className="text-black text-lg font-semibold">MyLocation</p>
               )}
             </div>
 

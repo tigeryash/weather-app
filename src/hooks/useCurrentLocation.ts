@@ -8,7 +8,7 @@ const useCurrentLocation = () => {
   const onError = useLocationStore((state) => state.onError);
   const setLoading = useLocationStore((state) => state.setLoading);
   const getSavedLocations = useLocationStore(
-    (state) => state.getSavedLocations
+    (state) => state.getSavedLocations,
   );
 
   useEffect(() => {
@@ -19,8 +19,7 @@ const useCurrentLocation = () => {
     }
     getLocation();
     getSavedLocations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getLocation, getSavedLocations, onError, setLoading]);
 
   return { currentLocation, loading };
 };

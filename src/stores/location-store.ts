@@ -1,9 +1,10 @@
-import { Location, LocationError, LocationSaved } from "@/types/locationTypes";
+import type {
+  Location,
+  LocationError,
+  LocationSaved,
+} from "@/types/locationTypes";
 import { create } from "zustand";
-import {
-  GEOLOCATION_ERROR_MESSAGE,
-  API_BASE_URLS,
-} from "@/lib/constants";
+import { GEOLOCATION_ERROR_MESSAGE, API_BASE_URLS } from "@/lib/constants";
 
 type LocationStoreType = {
   currentLocation: Location | null;
@@ -57,7 +58,7 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
         const { latitude, longitude } = position.coords;
         try {
           const res = await fetch(
-            `${API_BASE_URLS.OPENCAGE}?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`
+            `${API_BASE_URLS.OPENCAGE}?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`,
           );
           const data = await res.json();
           if (!data.results || data.results.length === 0) {
@@ -106,7 +107,7 @@ export const useLocationStore = create<LocationStoreType>((set, get) => ({
           },
         });
         set({ loading: false });
-      }
+      },
     );
   },
 }));

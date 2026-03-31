@@ -1,5 +1,5 @@
 import { useLocationStore } from "@/stores/location-store";
-import { Location, LocationSaved } from "@/types/locationTypes";
+import type { Location, LocationSaved } from "@/types/locationTypes";
 import { BsTrash3Fill } from "react-icons/bs";
 import { motion } from "motion/react";
 
@@ -12,9 +12,8 @@ type LocationListBtnProps = {
 const DeleteBtn = ({ loc, dragOffset, prevLoc }: LocationListBtnProps) => {
   const deleteLocation = useLocationStore((state) => state.deleteLocation);
   const setDisplayedLocation = useLocationStore(
-    (state) => state.setDisplayedLocation
+    (state) => state.setDisplayedLocation,
   );
-  const locations = useLocationStore((state) => state.locations);
 
   return (
     <motion.button
